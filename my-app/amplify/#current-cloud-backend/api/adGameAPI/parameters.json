@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "adGameAPI",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authadtrackergamec14c0074",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
