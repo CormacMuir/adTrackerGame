@@ -28,3 +28,6 @@ First thing learned is the manifest.json file is a compulsory file required for 
 [link]https://developer.chrome.com/docs/extensions/mv3/declare_permissions/
 
 After completing tutorial I've learned a bit about how chrome extensions work however the way in which ads are detected are by manually searching the HTML for keywords such as "Advert" or "Promoted" so it doesn't actually interact with the ad trackers themselves and therefore the tutorial was useless in that sense.
+
+https://github.com/notracking/hosts-blocklists/blob/master/adblock/adblock.txt
+Found block list here^ going to create a python script which will parse the block list and create a javascript module file out of it, this js file can then be used as a dictionary to check if the current url that the user is visiting is actually ad tracker

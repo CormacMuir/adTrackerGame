@@ -26,4 +26,6 @@
 **2 hours** Spent some time thinking about gameplay and drew up some ROUGH sketches in notepad about what game might look like along with how user interface might work
 
 # 03/11
-**1 hour** Developing ad blocker so i can extract the necessary ideas needed to develop ad tracker detection.
+**2 hour** Developing ad blocker so i can extract the necessary ideas needed to develop ad tracker detection.
+**2 hours** found block list that seems to be useful called adblock.txt, researched more on google chrome extension development.
+
