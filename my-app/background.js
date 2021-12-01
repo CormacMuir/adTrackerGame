@@ -1,7 +1,7 @@
 import { tracker_domains } from './trackerlist.mjs'
 
 chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.local.set({'totalAds': 0});
+    chrome.storage.local.set({ 'totalAds': 0 });
 
 });
 
@@ -11,16 +11,16 @@ chrome.runtime.onInstalled.addListener(function() {
     As opposed to e.g. webNavigation.onCompleted, this will start to run early
     so that we can begin to remove ads as soon as possible.
 */
-chrome.webNavigation.onCommitted.addListener(function (tab) {
+chrome.webNavigation.onCommitted.addListener(function(tab) {
     // Prevents script from running when other frames load
     if (tab.frameId == 0) {
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-            
+
 
             // Get the URL of the webpage
             let url = tabs[0].url;
             console.log(url);
-            
+
             // Remove unnecessary protocol definitions and www subdomain from the URL
             let parsedUrl = url.replace("https://", "")
                 .replace("http://", "")
@@ -45,12 +45,3 @@ chrome.webNavigation.onCommitted.addListener(function (tab) {
         });
     }
 });
-
-
-function runLinkedinScript() {
-    // Inject script from file into the webpage
-    chrome.tabs.executeScript({
-        file: 'linkedin.js'
-    });
-    return true;
-}

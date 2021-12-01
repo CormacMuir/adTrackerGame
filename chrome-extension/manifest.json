@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "name": "Ad Game",
+    "description": "Game with ad trackers",
+    "version": "0.0.1",
+    "author": "<Cormac Muir>",
+    "browser_action": {
+        "default_title": "AdblockGame"
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "declarativeContent",
+        "storage",
+        "webNavigation",
+        "webRequest",
+        "webRequestBlocking",
+        "http://*/",
+        "https://*/",
+        "http://localhost/*"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    }
+}
