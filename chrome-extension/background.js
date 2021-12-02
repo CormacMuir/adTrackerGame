@@ -4,19 +4,23 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 var filter = { urls: ["<all_urls>"] };
-var unique_domains = []
+var unique_hosts = []
 chrome.webRequest.onBeforeRequest.addListener(function (details) {
-    alert(Object.keys(tracker_domains).length);
+    
     
     var match = details.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-    var domain = match && match[1];
+    var domain = match[0]&&match[1];
+    var hostname = domain.substring(0,domain.lastIndexOf('.'));
+    
 
+    
 
-    if(domain){
-        if(unique_domains.indexOf(domain) === -1) {
-            alert(unique_domains.length)
-            unique_domains.push(domain);
-            alert(domain);}
+    if(domain!=null){
+        if(unique_hosts.indexOf(hostname) === -1) {
+            unique_hosts.push(hostname);
+            console.log(hostname);
+            if(hostname in tracker_domains || domain in tracker_domains){
+            console.log("AD TRACKER FOUND! "+ hostname);}}
 
         
     }
@@ -31,9 +35,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
 
     if (info.status === 'complete') {
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-
-            let url = tabs[0].url;
-            alert(url)
 
 
         });
