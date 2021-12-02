@@ -4,20 +4,20 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 var filter = { urls: ["<all_urls>"] };
-
+var unique_domains = []
 chrome.webRequest.onBeforeRequest.addListener(function (details) {
+    alert(Object.keys(tracker_domains).length);
     
     var match = details.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
     var domain = match && match[1];
-    
-    var unique_domains = []
-    
 
 
     if(domain){
         if(unique_domains.indexOf(domain) === -1) {
+            alert(unique_domains.length)
             unique_domains.push(domain);
             alert(domain);}
+
         
     }
 

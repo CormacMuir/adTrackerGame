@@ -14,7 +14,7 @@ with open("trackerlist.txt",'r') as f:
         trackers.append("'"+line+"'")
         tracker_urls.append('*://*.'+line+'/*')
 
-with open("trackerlist.mjs",'w') as f:
+with open("trackerlist.js",'w') as f:
     f.write("var tracker_domains = {\n")
     for i in range(len(trackers)):
         f.write(trackers[i]+":['"+tracker_urls[i]+"'],\n")

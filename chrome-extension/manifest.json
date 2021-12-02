@@ -23,7 +23,7 @@
     ],
     "background": {
         "scripts": [
-            "background.js"
+            "background.js","trackerlist.js"
         ]
     
     }
