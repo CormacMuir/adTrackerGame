@@ -4,8 +4,10 @@
     "description": "Game with ad trackers",
     "version": "0.0.1",
     "author": "<Cormac Muir>",
+    
     "browser_action": {
-        "default_title": "AdblockGame"
+        "default_title": "AdblockGame",
+        "default_popup": "popup.html"
     },
     "permissions": [
         "activeTab",
@@ -23,5 +25,6 @@
         "scripts": [
             "background.js"
         ]
+    
     }
 }
