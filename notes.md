@@ -35,3 +35,8 @@ Found block list here^ going to create a python script which will parse the bloc
 So i've thought about and sketched up a casino idea in which players will browse for ads, for every ad they see they can build up "chips" like they would in a casino and there are different ways to acquire chips. Each way has an associated risk with it, for example one way could be to bet a certain number of "chips" and then set a target goal of how many ad trackers you think you can find. The closer to this value you can get the more you get however if you go over the value then you go "bust"
 
 AWS amplify also probably wont work due to the conflict between GraphQL and npm nodejs? i think?
+
+
+Finally got ad tracker detection working however after manually reviewing all the web requests made from the sites it seems a lot are going undetected which suggests to me that i will need to improve my list of ad trackers that I currnetly have
+
+[link]https://developer.chrome.com/docs/extensions/reference/storage/ read this and found the function "onChanged" which is exactly what I need, can use this listener as a trigger to update popup.html and will also use for future features.

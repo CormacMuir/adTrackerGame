@@ -33,3 +33,11 @@
 # 01/12
 **4 hours** finally got extension working, able to obtain dom data and can retrieve current page data, can now begin focusing on logic
 **1 hour** sketched up a design for "casino" idea, could be interesting.
+
+# 05/12
+**4 hours** spent workin on js to allow me to detect ad trackers, wrking successfully next step is integrating with popup.html/popup.js and then server comms
+
+# 09/12
+
+**2 hours** got live ad counting working with dynamic html popup, user an now see a live counter of how many ads they have seen
+**0.5 hours** fixed a bug where when popup.html was closed and reopened the live ad counter would reset until another ad tracker was found
