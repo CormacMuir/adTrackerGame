@@ -29,3 +29,7 @@
 **2 hour** Developing ad blocker so i can extract the necessary ideas needed to develop ad tracker detection.
 **2 hours** found block list that seems to be useful called adblock.txt, researched more on google chrome extension development.
 
+
+# 01/12
+**4 hours** finally got extension working, able to obtain dom data and can retrieve current page data, can now begin focusing on logic
+**1 hour** sketched up a design for "casino" idea, could be interesting.

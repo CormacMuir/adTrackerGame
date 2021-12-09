@@ -31,3 +31,7 @@ After completing tutorial I've learned a bit about how chrome extensions work ho
 
 https://github.com/notracking/hosts-blocklists/blob/master/adblock/adblock.txt
 Found block list here^ going to create a python script which will parse the block list and create a javascript module file out of it, this js file can then be used as a dictionary to check if the current url that the user is visiting is actually ad tracker
+
+So i've thought about and sketched up a casino idea in which players will browse for ads, for every ad they see they can build up "chips" like they would in a casino and there are different ways to acquire chips. Each way has an associated risk with it, for example one way could be to bet a certain number of "chips" and then set a target goal of how many ad trackers you think you can find. The closer to this value you can get the more you get however if you go over the value then you go "bust"
+
+AWS amplify also probably wont work due to the conflict between GraphQL and npm nodejs? i think?
