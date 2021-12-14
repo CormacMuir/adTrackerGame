@@ -1,6 +1,8 @@
-
+//this needs to change, these should be information that will be sent to server.
+//Dont want a new adCount ONLY when the user installs the app
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.local.set({ 'adCount': 0 });
+    chrome.storage.local.set({ 'adCount': 0});
+    chrome.storage.local.set({'inGame':"false"});
 });
 
 var filter = { urls: ["<all_urls>"] };
@@ -25,17 +27,3 @@ chrome.webRequest.onBeforeRequest.addListener(function (details) {
 
 }, filter);
 
-
-
-
-
-chrome.tabs.onUpdated.addListener(function (tabId, info) {
-
-    if (info.status === 'complete') {
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-
-
-        });
-
-    }
-});
