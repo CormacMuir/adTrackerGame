@@ -42,4 +42,8 @@
 **2 hours** got live ad counting working with dynamic html popup, user an now see a live counter of how many ads they have seen
 **0.5 hours** fixed a bug where when popup.html was closed and reopened the live ad counter would reset until another ad tracker was found
 
-**3 hours** got first working version of single player stick or twist game working, need to iron out some bugs however after this is working at a good level i will look to implement some form of multiplayer version
+# 14/12
+**4 hours** got first working version of single player stick or twist game working, need to iron out some bugs however after this is working at a good level i will look to implement some form of multiplayer version
+
+# 15/12
+**X hours**

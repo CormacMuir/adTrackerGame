@@ -34,13 +34,13 @@ function checkGameOutcome() {
                 
                 
                 if (adCount > goal || botScore > adCount) {
-                    document.getElementById("goal").innerHTML = "lose";
+                    document.getElementById("result").innerHTML = "lose";
                     chrome.storage.local.set({ 'gameResult': "lose" });
                 } else if (adCount == botScore) {
-                    document.getElementById("goal").innerHTML = "tie";
+                    document.getElementById("result").innerHTML = "tie";
                     chrome.storage.local.set({ 'gameResult': "tie" });
                 } else {
-                    document.getElementById("goal").innerHTML = "win";
+                    document.getElementById("result").innerHTML = "win";
                     chrome.storage.local.set({ 'gameResult': "win" });
                 }
 
@@ -63,9 +63,11 @@ function setupGame() {
     chrome.storage.local.set({ 'adCount': 0 });
     chrome.storage.local.set({ 'goal': randomGoal });
     chrome.storage.local.set({ 'botScore': botScore });
+    chrome.storage.local.set({ 'gameResult': "inProgress" });
     document.getElementById("newGame").hidden = true;
     document.getElementById("stick").hidden = false;
     document.getElementById("goal").innerHTML = randomGoal;
+    window.location.reload();
 
 }
 
@@ -78,24 +80,32 @@ window.onload = function () {
 //function which fixed a bug where when the user closes the popup.html
 //the html would be overwritten and would no longer show the updated html
 function refreshPopup() {
-    chrome.storage.local.get("adCount", function (f) {
+
+    chrome.storage.local.get("gameResult", function (f) {
+        if (f.gameResult !="inProgress") {
+            hideElements();
+            document.getElementById("result").hidden = false;
+            document.getElementById("result").innerHTML = f.gameResult;
+            
+            document.getElementById("newGame").hidden = false;
+            
+
+        }else{
+chrome.storage.local.get("adCount", function (f) {
         document.getElementById("adCount").innerHTML = f.adCount;
+        document.getElementById("adCount").hidden = false;
     })
 
     chrome.storage.local.get("goal", function (f) {
         document.getElementById("goal").innerHTML = f.goal;
+        document.getElementById("goal").hidden = false;
     })
+    document.getElementById("newGame").hidden = true;
+    document.getElementById("stick").hidden = false;
 
-    chrome.storage.local.get("gameResult", function (f) {
-        document.getElementById("result").innerHTML = f.gameResult;
-    })
-
-    chrome.storage.local.get("inGame", function (f) {
-        if (f.inGame == "true") {
-            document.getElementById("stick").hidden = false;
-            document.getElementById("newGame").hidden = true;
         }
     })
+
 
 
 }
