@@ -46,4 +46,5 @@
 **4 hours** got first working version of single player stick or twist game working, need to iron out some bugs however after this is working at a good level i will look to implement some form of multiplayer version
 
 # 15/12
-**X hours**
+**4 hours**
+Completed 2/4 tasks set out in plan, checks to ensure same website can't be used within same game work and began work on turn based play. Popup updated with correct data now.
