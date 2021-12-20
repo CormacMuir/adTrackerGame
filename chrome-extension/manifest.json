@@ -26,5 +26,5 @@
             "background.js","trackerlist.js"
         ]
     
-    }
+    },"content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; object-src 'self'"
 }

@@ -40,3 +40,8 @@ AWS amplify also probably wont work due to the conflict between GraphQL and npm 
 Finally got ad tracker detection working however after manually reviewing all the web requests made from the sites it seems a lot are going undetected which suggests to me that i will need to improve my list of ad trackers that I currnetly have
 
 [link]https://developer.chrome.com/docs/extensions/reference/storage/ read this and found the function "onChanged" which is exactly what I need, can use this listener as a trigger to update popup.html and will also use for future features.
+
+So encountered a bug with googles "content security policy" which prevents external scripts from being accessed e.g. the cdn hosting bootstrap however after finding 2 links: 
+[link]https://stackoverflow.com/questions/17789426/whitelist-multiple-domains-in-content-security-policy
+[link]https://stackoverflow.com/questions/34950009/chrome-extension-refused-to-load-the-script-because-it-violates-the-following-c
+I was able to whitelist the domains and JQuery and bootstrap now work. 

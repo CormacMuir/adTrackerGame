@@ -48,3 +48,9 @@
 # 15/12
 **4 hours**
 Completed 2/4 tasks set out in plan, checks to ensure same website can't be used within same game work and began work on turn based play. Popup updated with correct data now.
+
+# 16/12
+**2 hours** spent time working on cleaning up javascript functions and also worked on wrapping different HTML elements that were part of different game screens in class tags to allow for cleaner JS.(e.g "ResultScreen")
+
+# 20/12
+**1 hour** fixed bug which prevented JQuery from being accessbile due to content security policy set by google.

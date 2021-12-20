@@ -39,35 +39,27 @@ function checkGameOutcome() {
                 let botScore = g.botScore;
                 let goal = h.goal;
 
-
                 if (adCount > goal || botScore > adCount) {
-                    document.getElementById("result").innerHTML = "lose";
                     chrome.storage.local.set({ 'gameResult': "lose" });
                 } else if (adCount == botScore) {
-                    document.getElementById("result").innerHTML = "tie";
+
                     chrome.storage.local.set({ 'gameResult': "tie" });
                 } else {
-                    document.getElementById("result").innerHTML = "win";
+
                     chrome.storage.local.set({ 'gameResult': "win" });
                 }
-
-                document.getElementById("result").hidden = false;
-                document.getElementById("newGame").hidden = false;
-
-
-
             })
         })
     })
 
-
+    window.location.reload();
 
 }
 function setupGame() {
     console.log("SETTING UP GAME!");
     let randomGoal = Math.floor(Math.random() * 25 + 5);
     let botScore = Math.floor(Math.random() * randomGoal + 1);
-    
+
     chrome.storage.local.set({ 'adCount': 0 });
     chrome.storage.local.set({ 'turn': 0 });
     chrome.storage.local.set({ 'goal': randomGoal });
@@ -76,10 +68,7 @@ function setupGame() {
     chrome.storage.local.set({ 'domainHistory': [] });
 
 
-    document.getElementById("newGame").hidden = true;
-    document.getElementById("stick").hidden = false;
-    document.getElementById("twist").hidden = false;
-    document.getElementById("goal").innerHTML = randomGoal;
+
     window.location.reload();
 
 }
@@ -96,12 +85,8 @@ function refreshPopup() {
 
     chrome.storage.local.get("gameResult", function (f) {
         if (f.gameResult != "inProgress") {
-            hideElements();
-            document.getElementById("result").hidden = false;
-            document.getElementById("result").innerHTML = f.gameResult;
 
-            document.getElementById("newGame").hidden = false;
-
+            showResultScreen(f.gameResult);
 
         } else {
             chrome.storage.local.get("adCount", function (f) {
@@ -118,7 +103,8 @@ function refreshPopup() {
 
             chrome.storage.local.get("turn", function (f) {
                 if (f.turn == 0) {
-                    document.getElementById("stick").hidden = true;
+                    document.getElementById("stick").hidden = false;
+                    document.getElementById("stick").disabled = true;
                     document.getElementById("twist").hidden = false;
                 } else {
                     document.getElementById("stick").hidden = false;
@@ -126,16 +112,29 @@ function refreshPopup() {
                 }
             })
             chrome.storage.local.get("error", function (f) {
-                
+
                 if (f.error) {
                     document.getElementById("error").hidden = false;
-                }else{
+                } else {
                     document.getElementById("error").hidden = true;
                 }
             })
         }
     })
 
+    //need functions to manipulate DOM to make code more readable i.e. "function resultScreen()"
+    function showResultScreen(gameResult) {
+        
+        $('.resultScreen').show();
+        document.getElementById("result").innerHTML = gameResult;
+        
 
+        chrome.storage.local.get("adCount", function (f) {
+            document.getElementById("finalScore").innerHTML = f.adCount;
+            document.getElementById("finalScore").hidden = false;
+        })
+
+
+    }
 
 }

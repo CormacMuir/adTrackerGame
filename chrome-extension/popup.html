@@ -14,24 +14,45 @@
 </head>
 
 <body>
-    <h1 hidden id="result"></h1>
-
     <div hidden id="error" class="alert alert-danger" role="alert">
         A website that was previously visited does not count towards your score! Try Again!
     </div>
+
+    <div class="resultScreen">
+        <h1 id="result"></h1>
+        <h2>Final Score: <span class="badge bg-secondary" id="finalScore"></span></h2>
+        <button id="newGame" class="alert alert-primary">New game</button>
+    </div>
+
+
+
+
+
+
 
 
     <p>Adverts found: <span id="adCount">None</span></p>
     <p>Ad tracker goal: <span id="goal"></span></p>
 
-    <button id="newGame" class="alert alert-primary">New game</button>
+
     <button hidden id="stick" class="btn btn-danger">Stick</button>
     <button hidden id="twist" class="btn btn-success">Twist</button>
 
-    <script src="popup.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+<!--Need to sort out the js scripts to allow for JQuery and bootstrap to work.
+    External js referencing not allowed due to security policies so must download
+    locally to enable the use of content.-->
+    <script src="scripts/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+        
+        <script src="popup.js"></script>
 </body>
 
 </html>
