@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+
+<html>
 <style>
     html {
         width: 300px;
@@ -6,15 +9,13 @@
 
     }
 </style>
-<html>
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
 <body>
-    <div hidden id="error" class="alert alert-danger" role="alert">
+    <div id="error" class="alert alert-danger" role="alert">
         A website that was previously visited does not count towards your score! Try Again!
     </div>
 
@@ -24,35 +25,39 @@
         <button id="newGame" class="alert alert-primary">New game</button>
     </div>
 
+    <div class="gameScreen">
+        <p>Adverts found: <span id="adCount">None</span></p>
+        <p>Ad tracker goal: <span id="goal"></span></p>
 
-
-
-
-
-
-
-    <p>Adverts found: <span id="adCount">None</span></p>
-    <p>Ad tracker goal: <span id="goal"></span></p>
-
-
-    <button hidden id="stick" class="btn btn-danger">Stick</button>
-    <button hidden id="twist" class="btn btn-success">Twist</button>
-
-
-
-
-<!--Need to sort out the js scripts to allow for JQuery and bootstrap to work.
-    External js referencing not allowed due to security policies so must download
-    locally to enable the use of content.-->
-    <script src="scripts/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+        <div class="gameButtons">
+            <button id="stick" class="btn btn-danger">Stick</button>
+            <button id="twist" class="btn btn-success">Twist</button>
+        </div>
         
+
+        <div class="awaitingResponse">
+            <p id="currentURL"></p>
+            <p id="message">waiting...</p>
+            <img src='imgs/Spinner-1s-200px.gif' />
+        </div>
+
+
+
+    </div>
+    <div><button id="admin" style="align-items: bottom;">admin reset</button></div>
+    <div>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="scripts/jquery.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
         <script src="popup.js"></script>
+    </div>
 </body>
 
 </html>

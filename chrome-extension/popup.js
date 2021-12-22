@@ -3,35 +3,38 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         if (key == "adCount") {
             document.getElementById("adCount").innerHTML = changes['adCount'].newValue;
         }
+        else if(key=="waiting"){
+            if(!changes['waiting'].newValue){
+                window.location.reload();
+            }
+        }
+
     }
 });
 
 document.getElementById("newGame").addEventListener("click", function () {
-    chrome.storage.local.remove("error");
     console.log("SETTING UP GAME!");
     setupGame();
 });
+
+
 
 document.getElementById("stick").addEventListener("click", function () {
     checkGameOutcome();
 });
 
 document.getElementById("twist").addEventListener("click", function () {
+    chrome.storage.local.set({ "waiting": "true" })
     chrome.storage.local.get("turn", function (f) {
-        chrome.storage.local.set({ "turn": f.turn + 1 })
+        chrome.storage.local.set({ "turn": f.turn + 1 });
     })
+    chrome.storage.local.remove("currentURL");
+    chrome.storage.local.remove("error");
     window.location.reload();
 });
 
 
-function hideElements() {
-    var elems = document.body.getElementsByTagName("*");
-    for (var i = 0; i < elems.length; i++) {
-        elems[i].hidden = true;
-    }
-}
 function checkGameOutcome() {
-    hideElements();
     chrome.storage.local.get("adCount", function (f) {
         chrome.storage.local.get("botScore", function (g) {
             chrome.storage.local.get("goal", function (h) {
@@ -60,6 +63,7 @@ function setupGame() {
     let randomGoal = Math.floor(Math.random() * 25 + 5);
     let botScore = Math.floor(Math.random() * randomGoal + 1);
 
+    chrome.storage.local.clear();
     chrome.storage.local.set({ 'adCount': 0 });
     chrome.storage.local.set({ 'turn': 0 });
     chrome.storage.local.set({ 'goal': randomGoal });
@@ -67,9 +71,8 @@ function setupGame() {
     chrome.storage.local.set({ 'gameResult': "inProgress" });
     chrome.storage.local.set({ 'domainHistory': [] });
 
-
-
     window.location.reload();
+    
 
 }
 
@@ -82,59 +85,78 @@ window.onload = function () {
 //function which fixed a bug where when the user closes the popup.html
 //the html would be overwritten and would no longer show the updated html
 function refreshPopup() {
-
+    $('.resultScreen').hide(0);
+    $('#error').hide();
     chrome.storage.local.get("gameResult", function (f) {
         if (f.gameResult != "inProgress") {
 
             showResultScreen(f.gameResult);
 
         } else {
+            
+
+            chrome.storage.local.get("waiting", function (f) {
+                if (f.waiting) {
+                    $('.gameButtons').hide(0);
+                    
+                    
+
+                }else{
+                    $('.awaitingResponse').hide(0);
+                }
+            })
+
             chrome.storage.local.get("adCount", function (f) {
                 document.getElementById("adCount").innerHTML = f.adCount;
-                document.getElementById("adCount").hidden = false;
             })
 
             chrome.storage.local.get("goal", function (f) {
                 document.getElementById("goal").innerHTML = f.goal;
-                document.getElementById("goal").hidden = false;
             })
 
-            document.getElementById("newGame").hidden = true;
 
             chrome.storage.local.get("turn", function (f) {
                 if (f.turn == 0) {
-                    document.getElementById("stick").hidden = false;
                     document.getElementById("stick").disabled = true;
-                    document.getElementById("twist").hidden = false;
-                } else {
-                    document.getElementById("stick").hidden = false;
-                    document.getElementById("twist").hidden = false;
                 }
             })
             chrome.storage.local.get("error", function (f) {
 
-                if (f.error) {
-                    document.getElementById("error").hidden = false;
-                } else {
-                    document.getElementById("error").hidden = true;
+
+                if (f.error=="true") {
+                    console.log("showing error");
+                    $('#error').show();
+                    
                 }
             })
+
+            chrome.storage.local.get("currentURL", function (f) {
+
+                if (f.currentURL) {
+                    document.getElementById("currentURL").innerHTML = f.currentURL;
+                }
+            })
+
+
         }
     })
 
     //need functions to manipulate DOM to make code more readable i.e. "function resultScreen()"
     function showResultScreen(gameResult) {
-        
-        $('.resultScreen').show();
+        $('.resultScreen').show(0);
+        $('.gameScreen').hide(0);
         document.getElementById("result").innerHTML = gameResult;
-        
-
         chrome.storage.local.get("adCount", function (f) {
             document.getElementById("finalScore").innerHTML = f.adCount;
-            document.getElementById("finalScore").hidden = false;
         })
 
 
     }
 
 }
+
+
+//ADMIN BUTTON- REMOVE FOR PROD
+document.getElementById("admin").addEventListener("click", function () {
+    setupGame();
+});

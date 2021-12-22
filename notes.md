@@ -45,3 +45,5 @@ So encountered a bug with googles "content security policy" which prevents exter
 [link]https://stackoverflow.com/questions/17789426/whitelist-multiple-domains-in-content-security-policy
 [link]https://stackoverflow.com/questions/34950009/chrome-extension-refused-to-load-the-script-because-it-violates-the-following-c
 I was able to whitelist the domains and JQuery and bootstrap now work. 
+
+Got loading icon from loading.io
