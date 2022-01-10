@@ -4,7 +4,6 @@
     "description": "Game with ad trackers",
     "version": "0.0.1",
     "author": "<Cormac Muir>",
-    
     "browser_action": {
         "default_title": "AdblockGame",
         "default_popup": "popup.html"
@@ -23,8 +22,18 @@
     ],
     "background": {
         "scripts": [
-            "background.js","trackerlist.js"
+            "background.js",
+            "trackerlist.js"
         ]
-    
-    },"content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; object-src 'self'"
+    },
+    "content_scripts": [{
+        "matches": [
+            "<all_urls>"
+        ],
+        "js": [
+            "contentEnd.js"
+        ],
+        "run_at": "document_end"
+    }],
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; object-src 'self'"
 }
