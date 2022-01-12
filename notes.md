@@ -47,3 +47,7 @@ So encountered a bug with googles "content security policy" which prevents exter
 I was able to whitelist the domains and JQuery and bootstrap now work. 
 
 Got loading icon from loading.io
+
+I've got a decent working version of single player stick or twist however I have since encountered the issue of working out how to detect when there are no more web requests to be made when loading a website i.e. that there can be no more ad trackers detected. The possible solution that I'm going to try is creating a content script that is run on "document_end" which sends a "message" to chrome runtime. What this means is that I should have a mechanism of talking to the background page and alerting it once a page is fully rendered and can then perform an action when this message is received. In this case the action will be sending a flag to the extension that this turn is over and all ad trackers that COULD be detected, have been detected. Info found on the following pages.
+[link]https://stackoverflow.com/questions/55255619/chrome-extension-content-script-at-both-document-start-and-document-end
+[link]https://developer.chrome.com/docs/extensions/mv3/messaging/

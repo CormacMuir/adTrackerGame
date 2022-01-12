@@ -54,3 +54,9 @@ Completed 2/4 tasks set out in plan, checks to ensure same website can't be used
 
 # 20/12
 **1 hour** fixed bug which prevented JQuery from being accessbile due to content security policy set by google.
+
+# 22/12
+**6 hours** Got loading animation working, disabled making moves whilst a turn was in progress, added timeout for listneing for ad trackers, 
+
+# 06/01
+**20 hours** Forgot to log time spent, hence the large number of hours spent. Notes, plan and git commits detail what exactlty was done, single player version is complete, still needs styled but moving onto multuplayer now.

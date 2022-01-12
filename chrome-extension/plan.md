@@ -13,3 +13,8 @@ Created stick or twist game, no need for twist button rn as loading a new web pa
 3. Implement a system so that users must wait for a "green light" to be able to "twist"
 4. Prevent "sticking" while ad trackers are coming in
 5. Clean up functions in popup.js[low priority]
+
+# 22/12
+1. Fix error message bug where it doesnt disappear
+2. Investigate why sometimes timeout doesnt work
+3. Begin reserach on multiplayer
