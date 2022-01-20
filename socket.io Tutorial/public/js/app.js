@@ -23,7 +23,6 @@ socket.on('startGame', () => {
 socket.on('setTurn', (data) => {
     if (socket.id == data) {
         updateScreen(true);
-        
     }
     else {
         updateScreen(false);
@@ -34,6 +33,15 @@ socket.on('setTurn', (data) => {
 socket.on('crazyIsClicked', (data) => {
     goCrazy(data.offsetLeft, data.offsetTop);
 
+});
+
+socket.on('gameReady', (data) => {
+    if (data.state == false) {
+        startButton.disabled = true;
+    } else {
+
+        startButton.disabled = false;
+    }
 });
 
 function hideStartButton() {

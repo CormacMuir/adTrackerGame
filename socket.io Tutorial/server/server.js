@@ -25,11 +25,14 @@ io.on('connection', (socket) => {
         console.log('A user just connected.');
         users.push(socket.id);
         if(users.length == 2){
-            SetTurn();
+            io.emit("gameReady",{state:true});
+        }else{
+            io.emit("gameReady",{state:false});
         }
 
         socket.on('startGame', () => {
             io.emit('startGame',);
+            SetTurn();
             
         })
 
@@ -40,6 +43,7 @@ io.on('connection', (socket) => {
             
         });
         socket.on('disconnect', () => {
+            io.emit("gameReady",{state:false});
             var discconnectIndex = users.indexOf(socket.id);
             users.splice(discconnectIndex,1);
             console.log('A user has disconnected.');
