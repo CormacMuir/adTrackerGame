@@ -54,3 +54,5 @@ I've got a decent working version of single player stick or twist however I have
 
 Found a tutorial on making a multiplayer game using socket.io [link]https://socket.io/
 [link]https://dev.to/asciiden/how-to-use-socket-io-not-the-chat-3l21
+
+So after extensive research into socket.io and completing the tutorial I have a firm grasp on the fundamentals of the library. I also think I have a rough understanding of how I will implement the library in my use case. The tutorial I used DID feature multiplayer, that is that 2 clients (or more) could interact with one another however there was no sense of turns and each client could perform actions whenever they pleased. I have sourced that it is possible to get the id of each connection and so i have a way of identifying each user as a player (1 or 2) and then can emit messages to particular users depending on who's turn it is.
