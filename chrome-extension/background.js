@@ -50,7 +50,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
                         chrome.storage.local.get("adCount", function(f) {
                             chrome.storage.local.set({ "adCount": f.adCount + 1 })
                         })
-                        console.log("AD TRACKER FOUND! " + hostname);
+                        console.log("ad found: " + hostname);
 
 
                     }
@@ -65,13 +65,3 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 }, filter);
 
 
-// chrome.storage.onChanged.addListener(function(changes, namespace) {
-//     for (var key in changes) {
-//         if (key == "currentURL") {
-//             if (changes["currentURL"].newValue != null) {
-//                 chrome.storage.local.set({ "waiting": (Date.now() + 5000) });
-//             }
-
-//         }
-//     }
-// });
