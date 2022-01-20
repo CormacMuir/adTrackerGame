@@ -3,7 +3,6 @@ const startingSection = document.querySelector('.starting-section');
 const homeBtn = document.querySelector('.home-btn');
 let crazyButton = document.getElementById('crazyButton');
 let startButton = document.getElementById("startButton");
-let turn = false;
 
 
 startButton.addEventListener('click', () => {
@@ -14,6 +13,7 @@ crazyButton.addEventListener('click', () => {
         offsetLeft: Math.random() * ((window.innerWidth - crazyButton.clientWidth) - 100),
         offsetTop: Math.random() * ((window.innerHeight - crazyButton.clientHeight) - 50)
     });
+
 })
 
 socket.on('startGame', () => {
@@ -21,16 +21,19 @@ socket.on('startGame', () => {
 });
 
 socket.on('setTurn', (data) => {
-    if(data==true){
-        turn = true;
-    }else{
-        turn = false;
+    if (socket.id == data) {
+        updateScreen(true);
+        
     }
-    updateScreen();
+    else {
+        updateScreen(false);
+    }
 });
+
 
 socket.on('crazyIsClicked', (data) => {
     goCrazy(data.offsetLeft, data.offsetTop);
+
 });
 
 function hideStartButton() {
@@ -47,9 +50,10 @@ function goCrazy(offLeft, offTop) {
     crazyButton.style.animation = "none";
 }
 
-function updateScreen(){
-    if (turn==false){
+function updateScreen(turn) {
+    if (turn == false) {
         crazyButton.disabled = true;
-        alert("not ur turn");
+    } else {
+        crazyButton.disabled = false;
     }
 }
