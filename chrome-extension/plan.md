@@ -18,3 +18,8 @@ Created stick or twist game, no need for twist button rn as loading a new web pa
 1. Fix error message bug where it doesnt disappear
 2. Investigate why sometimes timeout doesnt work
 3. Begin reserach on multiplayer
+
+# 20/01
+1. Begin to merge multiplayer aspects with my single player game
+2. Look into hosting
+3. Create a dashboard/login system

@@ -61,5 +61,8 @@ Completed 2/4 tasks set out in plan, checks to ensure same website can't be used
 # 06/01
 **20 hours** Forgot to log time spent, hence the large number of hours spent. Notes, plan and git commits detail what exactlty was done, single player version is complete, still needs styled but moving onto multuplayer now.
 
-# 17/01 - 20/01
+# 16/01 - 19/01
 **15 hours** Researching socket.io material, learning how the library works and completed a tutorial. Have a good idea of how socket.io will be useful in my project.
+
+# 20/01
+**4 hours** Adapted the tutorial to work on a turn based system, clients can be identified by server and if its not their turn they must wait for the other player. This is how my final game will work and thus is excellent progress. Next steps include taking the standalone multiplayer interactions i've developed and merge them with my single player game.

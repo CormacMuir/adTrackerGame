@@ -56,3 +56,9 @@ Found a tutorial on making a multiplayer game using socket.io [link]https://sock
 [link]https://dev.to/asciiden/how-to-use-socket-io-not-the-chat-3l21
 
 So after extensive research into socket.io and completing the tutorial I have a firm grasp on the fundamentals of the library. I also think I have a rough understanding of how I will implement the library in my use case. The tutorial I used DID feature multiplayer, that is that 2 clients (or more) could interact with one another however there was no sense of turns and each client could perform actions whenever they pleased. I have sourced that it is possible to get the id of each connection and so i have a way of identifying each user as a player (1 or 2) and then can emit messages to particular users depending on who's turn it is.
+
+So i've started by adapting the tutorial given so that each client can only interact with the site in turn, this should give me the "turn-based" aspect of the game. 
+
+A lot of online material for socket.io is dated as its still very active and constantly updated, took a while to find out how to gettotal number of tonnections however found at the following link [link]https://stackoverflow.com/questions/10275667/socket-io-connected-user-count
+
+Adapted the tutorial I found to work on a turn based system, i now need to port this over to my game and incorproate the server client aspects into the ad game.
