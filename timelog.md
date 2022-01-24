@@ -66,3 +66,6 @@ Completed 2/4 tasks set out in plan, checks to ensure same website can't be used
 
 # 20/01
 **4 hours** Adapted the tutorial to work on a turn based system, clients can be identified by server and if its not their turn they must wait for the other player. This is how my final game will work and thus is excellent progress. Next steps include taking the standalone multiplayer interactions i've developed and merge them with my single player game.
+
+# 24/01
+**2 hours** Worked on 'rooms' so that users can see list of open games

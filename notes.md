@@ -62,3 +62,5 @@ So i've started by adapting the tutorial given so that each client can only inte
 A lot of online material for socket.io is dated as its still very active and constantly updated, took a while to find out how to gettotal number of tonnections however found at the following link [link]https://stackoverflow.com/questions/10275667/socket-io-connected-user-count
 
 Adapted the tutorial I found to work on a turn based system, i now need to port this over to my game and incorproate the server client aspects into the ad game.
+
+My final step before I fully start merging single player and multiplayer aspects of the game is to practice creating "rooms" in socket.io. This means that each pair of players will have their own game environment and will NOT interfere with others

@@ -17,44 +17,54 @@ server.listen(port, () => {
 const users = []
 let current_turn = Math.round(Math.random());
 io.on('connection', (socket) => {
-    if (socket.client.conn.server.clientsCount >= 3) {
-        console.log("max user reached");
-        socket.disconnect();
-        return;
-    } else {
-        console.log('A user just connected.');
-        users.push(socket.id);
-        if(users.length == 2){
-            io.emit("gameReady",{state:true});
-        }else{
-            io.emit("gameReady",{state:false});
+
+    console.log('A user just connected.');
+
+    socket.on('joinRoom', function (gid) {
+        if(gid==-1){
+            gid = io.sockets.adapter.rooms.size
         }
+        var room = 'game'+gid;
+        socket.join(room);
+        io.emit('roomRefresh',{roomid:room});
+    });
 
-        socket.on('startGame', () => {
-            io.emit('startGame',);
-            SetTurn();
-            
-        })
 
-        socket.on('crazyIsClicked', (data) => {
-            SetTurn();
-            io.emit('crazyIsClicked', data);
 
-            
-        });
-        socket.on('disconnect', () => {
-            io.emit("gameReady",{state:false});
-            var discconnectIndex = users.indexOf(socket.id);
-            users.splice(discconnectIndex,1);
-            console.log('A user has disconnected.');
-        })
-        function SetTurn(){
-            io.emit('setTurn',users[current_turn] );
 
-            current_turn = 1 - current_turn;
-            
-        }
+    // users.push(socket.id);
+    // if (users.length == 2) {
+    //     io.emit("gameReady", { state: true });
+    // } else {
+    //     io.emit("gameReady", { state: false });
+    // }
+
+    socket.on('startGame', () => {
+        io.emit('startGame',);
+        SetTurn();
+
+    })
+    
+
+    socket.on('crazyIsClicked', (data) => {
+        SetTurn();
+        io.emit('crazyIsClicked', data);
+
+
+    });
+    socket.on('disconnect', () => {
+        io.emit("gameReady", { state: false });
+        var discconnectIndex = users.indexOf(socket.id);
+        users.splice(discconnectIndex, 1);
+        console.log('A user has disconnected.');
+    })
+    function SetTurn() {
+        io.emit('setTurn', users[current_turn]);
+
+        current_turn = 1 - current_turn;
+
     }
+
 
 
 });

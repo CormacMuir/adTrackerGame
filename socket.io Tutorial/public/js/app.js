@@ -8,6 +8,10 @@ let startButton = document.getElementById("startButton");
 startButton.addEventListener('click', () => {
     socket.emit('startGame');
 })
+
+create.addEventListener('click', () => {
+    socket.emit('joinRoom', -1);
+})
 crazyButton.addEventListener('click', () => {
     socket.emit('crazyIsClicked', {
         offsetLeft: Math.random() * ((window.innerWidth - crazyButton.clientWidth) - 100),
@@ -16,9 +20,25 @@ crazyButton.addEventListener('click', () => {
 
 })
 
+
 socket.on('startGame', () => {
     hideStartButton();
 });
+
+socket.on('roomRefresh'), (data) => {
+    if(data.action=="add"){
+    var tableref = document.getElementById('activeGames');
+    var newRow = tableref.insertRow(-1);
+    var newCell = newRow.insertCell(0);
+    var newElem = document.creatElement('input');
+    newElem.setAttribute("type", "button");
+    newElem.setAttribute("value", data.roomid);
+    newElem.setAttribute("onclick", 'joinRoom('+data.roomid+')')
+    newCell.appendChild(newElem);
+    }
+}
+
+
 
 socket.on('setTurn', (data) => {
     if (socket.id == data) {
