@@ -64,3 +64,5 @@ A lot of online material for socket.io is dated as its still very active and con
 Adapted the tutorial I found to work on a turn based system, i now need to port this over to my game and incorproate the server client aspects into the ad game.
 
 My final step before I fully start merging single player and multiplayer aspects of the game is to practice creating "rooms" in socket.io. This means that each pair of players will have their own game environment and will NOT interfere with others
+
+So i have finished working on the standalone socket.io project which includes a "lobby" feature, i.e. many players can play the game however can only interact with their one other opponent in a turn based fashion. I wanted to work on this separately to my standalone single player app as I felt if I could get the skeleton of socket.io written then it would be easy to drop sections of my ad game into the socket.io framework.
