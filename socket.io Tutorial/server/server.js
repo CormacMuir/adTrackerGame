@@ -23,10 +23,14 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', function (gid) {
         if(gid==-1){
             gid = io.sockets.adapter.rooms.size
-        }
-        var room = 'game'+gid;
-        socket.join(room);
-        io.emit('roomRefresh',{roomid:room});
+            var room = 'game'+gid;
+            socket.join(room);
+            io.emit('roomRefresh',{roomid:room,action:"add"});
+        }else{
+            socket.join(gid);
+            io.emit('roomRefresh',{roomid:room,action:"remove"});
+        } 
+        
     });
 
 

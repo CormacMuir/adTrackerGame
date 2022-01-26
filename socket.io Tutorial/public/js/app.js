@@ -25,18 +25,20 @@ socket.on('startGame', () => {
     hideStartButton();
 });
 
-socket.on('roomRefresh'), (data) => {
-    if(data.action=="add"){
-    var tableref = document.getElementById('activeGames');
-    var newRow = tableref.insertRow(-1);
-    var newCell = newRow.insertCell(0);
-    var newElem = document.creatElement('input');
-    newElem.setAttribute("type", "button");
-    newElem.setAttribute("value", data.roomid);
-    newElem.setAttribute("onclick", 'joinRoom('+data.roomid+')')
-    newCell.appendChild(newElem);
+socket.on('roomRefresh', (data) => {
+    if (data.action == "add") {
+        alert("room to be added");
+        let btn = document.createElement("button");
+        btn.innerHTML = "Join";
+        btn.onclick = function () {joinRoom(btn.id)}; 
+        btn.id = data.roomid;
+        document.body.appendChild(btn);
+    } else if(data.action="remove") {
+        alert("room to be removed: "+ data.roomid);
+        let btn = document.getElementById(data.roomid);
+        btn.remove();
     }
-}
+});
 
 
 
@@ -78,6 +80,9 @@ function goCrazy(offLeft, offTop) {
     crazyButton.style.animation = "none";
 }
 
+function joinRoom(roomid){
+    socket.emit('joinRoom',roomid );
+}
 function updateScreen(turn) {
     if (turn == false) {
         crazyButton.disabled = true;
