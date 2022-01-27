@@ -24,6 +24,7 @@
         "scripts": [
             "background.js",
             "trackerlist.js"
+            
         ]
     },
     "content_scripts": [{
