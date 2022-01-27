@@ -1,3 +1,5 @@
+let socket = io();
+
 //this needs to change, these should be information that will be sent to server.
 //Dont want a new adCount ONLY when the user installs the app
 chrome.runtime.onInstalled.addListener(function() {
