@@ -31,6 +31,7 @@ mongo.connect('mongodb://127.0.0.1/', function(err, client) {
         socket.emit('populateRooms', rooms);
 
         socket.on('joinRoom', (gid) => {
+            console.log("room created");
             if (gid == -1) {
                 gid = io.sockets.adapter.rooms.size
                 var room = 'game' + gid;

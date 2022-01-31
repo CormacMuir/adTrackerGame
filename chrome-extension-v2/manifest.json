@@ -23,9 +23,10 @@
     "background": {
         "scripts": [
             "background.js",
-            "trackerlist.js"
-            
-        ]
+            "trackerlist.js",
+            "client.js"
+        ],
+        "persistent": true
     },
     "content_scripts": [{
         "matches": [
