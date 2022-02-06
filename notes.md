@@ -68,3 +68,5 @@ My final step before I fully start merging single player and multiplayer aspects
 So i have finished working on the standalone socket.io project which includes a "lobby" feature, i.e. many players can play the game however can only interact with their one other opponent in a turn based fashion. I wanted to work on this separately to my standalone single player app as I felt if I could get the skeleton of socket.io written then it would be easy to drop sections of my ad game into the socket.io framework.
 
 Copying all the chrome extension code into a folder called "version2" so that I can attempt to integrate the multiplayer functionality with the current game WITHOUT ruining everything
+
+So after many days and long nights spend trying to integrate socket.io i've deduced some overall problems. The idea of allowing a socket.io connection to survive in a google chrome extension has its limitations. A socket.io client join request is bound to some URL, the chrome extension has no URL as its bound to the browser so I think i'll have to create a react app which will allow the user to access some URL and also allow the user to bind to a particular URL.

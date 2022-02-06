@@ -73,3 +73,6 @@ Completed 2/4 tasks set out in plan, checks to ensure same website can't be used
 # 26/01
 **7 hours** Managed to finish my test application to get all the building blocks of socket.io working. Many different "lobbies" can have their own turn-based interactions and there is a 'live' lobby screen which players can see all available games from and join accordingly
 Also added MongoDB and created a db however not integrated yet.
+
+# 28/01-31/01
+**~10hours** Attempting to resolve the headache of integrating socket.io.

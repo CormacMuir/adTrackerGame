@@ -62,9 +62,5 @@ chrome.webRequest.onBeforeRequest.addListener(function (details) {
         } else {
             chrome.storage.local.remove("waiting");
         }
-
     })
-
 }, filter);
-
-
