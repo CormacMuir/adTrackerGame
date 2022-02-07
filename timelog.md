@@ -76,3 +76,6 @@ Also added MongoDB and created a db however not integrated yet.
 
 # 28/01-31/01
 **~10hours** Attempting to resolve the headache of integrating socket.io.
+
+# 04-06/02 
+**~15hours** Finally got socket.io working and the sockets persisting between pages, can finally start to actually work and integrate game logic

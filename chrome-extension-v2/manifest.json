@@ -23,7 +23,7 @@
     "background": {
         "scripts": [
             "background.js",
-            "trackerlist.js",
+            "scripts/trackerlist.js",
             "scripts/socket.io.js",
             "scripts/socket-expose.js"
         ]
@@ -33,7 +33,7 @@
             "<all_urls>"
         ],
         "js": [
-            "contentEnd.js"
+            "scripts/contentEnd.js"
         ],
         "run_at": "document_end"
     }],

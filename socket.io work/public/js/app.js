@@ -43,7 +43,6 @@ socket.on('populateRooms', (roomList) => {
     for (var room of roomList) {
         addRoom(room);
     }
-
 });
 
 socket.on('roomRefresh', (data) => {

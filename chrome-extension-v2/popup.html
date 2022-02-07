@@ -14,13 +14,19 @@
 
 <body>
 
-    <div id="lobby">
+    <div id="lobbySelect">
         <button type="button" id="create">create</button>
         <table id="activeGames">
             <tr>
                 <th>Active Games</th>
             </tr>
         </table>
+    </div>
+
+    <div id="lobby">
+        <h2 id="lobbyLabel"></h2>
+        <div id = "chat"></div>
+        <button id="messagebtn">Send Message!</button>
     </div>
     <div id="game">
         <div id="error" class="alert alert-danger" role="alert">
@@ -50,7 +56,7 @@
 
 
         </div>
-        <div><button id="admin" style="align-items: bottom;">admin reset</button></div>
+        
     </div>
     <div>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -62,6 +68,7 @@
         
         
     </div>
+    <div><button id="admin" style="align-items: bottom;">admin reset</button></div>
 </body>
 
 </html>

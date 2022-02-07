@@ -2,6 +2,10 @@
     display: none;
 }
 
+#lobby {
+    display: none;
+}
+
 #gameScreen p {
     text-align: center;
     font-family: 'Courier New', monospace;

@@ -21,7 +21,7 @@ mongo.connect('mongodb://127.0.0.1/', function(err, client) {
 
     const rooms = []
     const users = {}
-    const users_inGame = []
+
 
     io.on('connection', (socket) => {
         let db_users = db.collection('users');
@@ -37,7 +37,7 @@ mongo.connect('mongodb://127.0.0.1/', function(err, client) {
                 var room = 'game' + gid;
                 socket.join(room);
                 rooms.push(room);
-                users_inGame.push(socket.id);
+
 
                 io.emit('roomRefresh', { roomid: room, action: "add" });
                 socket.emit('joinGameLobby', room)
