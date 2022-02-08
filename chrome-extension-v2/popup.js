@@ -30,6 +30,7 @@ chrome.runtime.onMessage.addListener((message) => {
     } else if (typeof message.updateLobbyLabel !== 'undefined') {
         document.getElementById("lobbyLabel").innerHTML = message.updateLobbyLabel;
     }else if (typeof message.displayMessage !== 'undefined'){
+        alert("message");
         addChat(message.displayMessage);
     }
 });
@@ -183,7 +184,6 @@ function refreshPopup() {
 document.getElementById("messagebtn").addEventListener("click", function () {
     let chat = prompt("Whats your message! :)");
     if (chat != null) {
-        addChat(chat)
         chrome.runtime.sendMessage({ addChat: chat });
         
     }
@@ -193,6 +193,5 @@ function addChat(message) {
     var chat = document.getElementById("chat");
     let chatentry = document.createElement("h2");
     chatentry.innerHTML = message;
-
     chat.appendChild(chatentry);
 }

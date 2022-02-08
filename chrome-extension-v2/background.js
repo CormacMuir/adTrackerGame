@@ -7,7 +7,6 @@ const filter = { urls: ["<all_urls>"] };
 var unique_hosts = [];
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    socket.emit("url", tab.url);
     chrome.storage.local.get("turn", function(g) {
         if (changeInfo.status == 'loading') {
             let url = new URL(tab.url)

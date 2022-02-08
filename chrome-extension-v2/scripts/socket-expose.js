@@ -1,6 +1,6 @@
 //connection to server
-//const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
+//const socket = io.connect("http://localhost:3000");
 
 chrome.runtime.onMessage.addListener((message) => {
     if (message.createLobby === true) {
@@ -13,27 +13,36 @@ chrome.runtime.onMessage.addListener((message) => {
         socket.emit('getRooms');
     } else if (typeof message.addChat !== 'undefined') {
         console.log("message sending...");
-        socket.emit('displayMessage', message.addChat);
+        sendchat(message.addChat);
         console.log("message sent");
     } else if (message.clearRooms === true) {
         socket.emit("clearRooms");
     }
-});
+})
 
-socket.on('displayMessage'), (message) => {
-    console.log("sss");
-    chrome.runtime.sendMessage({ displayMessage: message });
-}
 socket.on('populateRooms', (roomList) => {
     for (var room of roomList) {
         chrome.runtime.sendMessage({ addRoom: room });
     }
-});
+})
 socket.on('joinGameLobby', (roomid) => {
     chrome.storage.local.set({ 'lobby': roomid });
     chrome.runtime.sendMessage({ joinLobby: roomid });
-});
+})
+
 
 socket.on('alert', () => {
-    alert("room full");
+    alert("user has joined");
 })
+
+socket.on("messageSend", (message) => {
+    chrome.runtime.sendMessage({ displayMessage: message });
+})
+
+setInterval(function () {
+    socket.emit("testConnection");
+}, 20000);
+
+function sendchat(message){
+    socket.emit("sendMessage",message);
+}

@@ -70,11 +70,11 @@ mongo.connect('mongodb://127.0.0.1/', function(err, client) {
         });
 
 
-        socket.on('crazyIsClicked', (data) => {
+socket.on('crazyIsClicked', (data) => {
             currentRoom = getCurrentRoom();
             SetTurn();
             io.in(currentRoom).emit('crazyIsClicked', data);
-        });
+        });        
 
 
         function SetTurn() {
