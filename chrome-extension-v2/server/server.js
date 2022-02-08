@@ -12,11 +12,12 @@ const { Server } = require("socket.io"), { createServer } = require("http"),
 
 
 let rooms = []
-let users_inGame = []
+let users = {}
 
 io.on("connection", (socket) => {
     console.info(`Client connected [id=${socket.id}]`);
     socket.on("getRooms", () => {
+        console.info("getting rooms...");
         socket.emit('populateRooms', rooms);
     });
 
@@ -27,9 +28,6 @@ io.on("connection", (socket) => {
             var room = 'game' + gid;
             socket.join(room);
             rooms.push(room);
-            users_inGame.push(socket);
-
-
             io.emit('roomRefresh', { roomid: room, action: "add" });
             socket.emit('joinGameLobby', room)
 
@@ -45,23 +43,44 @@ io.on("connection", (socket) => {
 
     });
 
-
     socket.on("clearRooms", () => {
         rooms = [];
-        users_inGame = [];
-    });
-    socket.on('sendMessage', (message) => {
-        console.log("display");
-        currentRoom = getCurrentRoom(socket);
-        io.in(currentRoom).emit('messageSend',message);
-        console.log("display");
     });
 
-    socket.on('crazyIsClicked', (data) => {
+    socket.on('gameReadyCheck', () => {
         currentRoom = getCurrentRoom();
-        SetTurn();
-        io.in(currentRoom).emit('crazyIsClicked', data);
+        currentRoomPlayers = io.sockets.adapter.rooms.get(currentRoom);
+        console.log(currentRoomPlayers);
+        if (currentRoomPlayers.size == 2) {
+            io.in(getCurrentRoom()).emit('gameReady', { state: true });
+            var gameData = { userList: Array.from(currentRoomPlayers), current_turn: Math.round(Math.random()), readys: 0 };
+            users[currentRoom] = gameData;
+
+        }
+
     });
+
+    socket.on('readyUp', () => {
+        currentRoom = getCurrentRoom();
+        gameData = users[currentRoom];
+        if (gameData.readys == 0) {
+            gameData.readys = 1;
+            users[currentRoom] = gameData;
+        } else {
+            SetTurn(getCurrentRoom());
+        }
+    });
+
+    function SetTurn() {
+        currentRoom = getCurrentRoom();
+        gameData = users[currentRoom];
+
+        io.in(currentRoom).emit('setTurn', gameData.userList[gameData.current_turn]);
+    }
+
+
+
+
 
     function getCurrentRoom() {
         return Array.from(socket.rooms).pop();
@@ -71,13 +90,5 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.info(`Client gone [id=${socket.id}]`);
     });
-
-    socket.on("testConnection", () => {
-        if(users_inGame.indexOf(socket) >= 0){
-        io.in(getCurrentRoom()).emit('testConnection',getCurrentRoom());
-        }
-    })
 });
-
-
 httpServer.listen(process.env.PORT || 3000);
