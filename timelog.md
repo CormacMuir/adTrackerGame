@@ -79,3 +79,10 @@ Also added MongoDB and created a db however not integrated yet.
 
 # 04-06/02 
 **~15hours** Finally got socket.io working and the sockets persisting between pages, can finally start to actually work and integrate game logic
+
+# 07/02
+**4 hours** Worked on server logic and got hosting on heroku setup
+
+# 08/02
+**5 hours** Got turn based multiplayer working and first working game, just need to move win conditions to serverside and then first iteration of game should be done
+

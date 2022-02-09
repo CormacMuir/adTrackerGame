@@ -79,12 +79,12 @@ socket.on('crazyIsClicked', (data) => {
 
         function SetTurn() {
             currentRoom = getCurrentRoom();
-            userData = users[currentRoom];
+            gameData = users[currentRoom];
 
-            io.in(currentRoom).emit('setTurn', userData.userList[userData.current_turn]);
+            io.in(currentRoom).emit('setTurn', gameData.userList[gameData.current_turn]);
 
-            userData.current_turn = 1 - userData.current_turn;
-            users[currentRoom] = userData;
+            gameData.current_turn = 1 - gameData.current_turn;
+            users[currentRoom] = gameData;
         }
 
         function getCurrentRoom() {

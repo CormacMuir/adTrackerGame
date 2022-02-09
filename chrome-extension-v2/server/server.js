@@ -17,7 +17,6 @@ let users = {}
 io.on("connection", (socket) => {
     console.info(`Client connected [id=${socket.id}]`);
     socket.on("getRooms", () => {
-        console.info("getting rooms...");
         socket.emit('populateRooms', rooms);
     });
 
@@ -38,7 +37,6 @@ io.on("connection", (socket) => {
             const index = rooms.indexOf(gid);
             rooms.splice(index, 1);
             socket.emit('joinGameLobby', gid)
-            io.in(getCurrentRoom()).emit('alert');
         }
 
     });
@@ -67,19 +65,20 @@ io.on("connection", (socket) => {
             gameData.readys = 1;
             users[currentRoom] = gameData;
         } else {
+            let targetScore = Math.floor(Math.random() * 20)+10;
+            io.in(currentRoom).emit('initGame',targetScore);
             SetTurn(getCurrentRoom());
+
         }
     });
 
     function SetTurn() {
         currentRoom = getCurrentRoom();
         gameData = users[currentRoom];
-
         io.in(currentRoom).emit('setTurn', gameData.userList[gameData.current_turn]);
+        gameData.current_turn = 1 - gameData.current_turn;
+        users[currentRoom] = gameData;
     }
-
-
-
 
 
     function getCurrentRoom() {

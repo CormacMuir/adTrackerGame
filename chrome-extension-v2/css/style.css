@@ -1,7 +1,15 @@
 #game {
     display: none;
 }
-
+#error {
+    display: none;
+}
+#waitingForOpponent{
+    display:none;
+}
+.resultScreen {
+    display: none;
+}
 #lobby {
     display: none;
 }
