@@ -7,10 +7,13 @@
 #waitingForOpponent{
     display:none;
 }
-.resultScreen {
+#resultScreen {
     display: none;
 }
 #lobby {
+    display: none;
+}
+#lobbySelect {
     display: none;
 }
 

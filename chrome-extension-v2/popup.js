@@ -7,6 +7,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             window.location.reload();
         } else if (key == "myTurn") {
             window.location.reload();
+        } else if (key == "gameStatus") {
+            window.location.reload();
         }
 
     }
@@ -38,8 +40,6 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-
-
 document.getElementById("create").addEventListener("click", function () {
     chrome.runtime.sendMessage({ createLobby: true });
 });
@@ -52,7 +52,7 @@ document.getElementById("readyBtn").addEventListener("click", function () {
 
 
 document.getElementById("stick").addEventListener("click", function () {
-    checkGameOutcome();
+    chrome.runtime.sendMessage({ 'turnComplete': true })
 });
 
 document.getElementById("twist").addEventListener("click", function () {
@@ -65,61 +65,18 @@ document.getElementById("twist").addEventListener("click", function () {
     window.location.reload();
 });
 
-function checkGameOutcome() {
-    chrome.storage.local.get("adCount", function (f) {
-        chrome.storage.local.get("botScore", function (g) {
-            chrome.storage.local.get("goal", function (h) {
-                let adCount = f.adCount;
-                let botScore = g.botScore;
-                let goal = h.goal;
-
-                if (adCount > goal || botScore > adCount) {
-                    chrome.storage.local.set({ 'gameStatus': "lose" });
-                } else if (adCount == botScore) {
-
-                    chrome.storage.local.set({ 'gameStatus': "tie" });
-                } else {
-
-                    chrome.storage.local.set({ 'gameStatus': "win" });
-                }
-            })
-        })
-    })
-
-    window.location.reload();
-
-}
-
-
 
 window.onload = function () {
     refreshPopup();
 }
-
 //function which fixed a bug where when the user closes the popup.html
 //the html would be overwritten and would no longer show the updated html
 function refreshPopup() {
-    chrome.runtime.sendMessage({ getRooms: true });
-    chrome.storage.local.get("lobby", function (f) {
-        if (f.lobby) {
-            $('#lobbySelect').hide()
-            $('#lobby').show()
-            document.getElementById("lobbyLabel").innerHTML = f.lobby;
-            chrome.storage.local.get("ready", function (g) {
-                if (g.ready === true) {
-                    document.getElementById("readyBtn").disabled = false;
-                }
-            })
-        }
-    })
     chrome.storage.local.get("gameStatus", function (f) {
-        if (f.gameStatus != "inProgress") {
-            showResultScreen(f.gameStatus);
-        } else {
+        if (f.gameStatus == "inProgress") {
             $('#lobbySelect').hide()
             $('#lobby').hide()
             chrome.storage.local.get("myTurn", function (g) {
-
                 if (g.myTurn === true) {
                     $('#game').show()
                     chrome.storage.local.get("waiting", function (f) {
@@ -158,18 +115,43 @@ function refreshPopup() {
                     $('#waitingForOpponent').show()
                 }
             })
+        } else if (f.gameStatus == "finished") {
+
+            chrome.storage.local.get("result", function (g) {
+                $('#result').html(g.result);
+            })
+            chrome.storage.local.get("opponnentScore", function (g) {
+                alert(g.opponnentScore);
+                $('#opponnentScore span').html(g.opponnentScore);
+            })
+            chrome.storage.local.get("adCount", function (g) {
+                $('#adCount span').html(g.adCount);
+            })
+            chrome.storage.local.get("goal", function (g) {
+                $('#goal span').html(g.goal);
+            })
+            $('#resultScreen').show()
+
+        } else {
+            $('#lobbySelect').show()
+            chrome.runtime.sendMessage({ getRooms: true });
+            chrome.storage.local.get("lobby", function (f) {
+                if (f.lobby) {
+                    $('#lobbySelect').hide()
+                    $('#lobby').show()
+                    document.getElementById("lobbyLabel").innerHTML = f.lobby;
+                    chrome.storage.local.get("ready", function (g) {
+                        if (g.ready === true) {
+                            document.getElementById("readyBtn").disabled = false;
+                        }
+                    })
+                }
+            })
         }
     })
 
     //need functions to manipulate DOM to make code more readable i.e. "function resultScreen()"
-    function showResultScreen(gameStatus) {
-        $('.resultScreen').show(0);
-        $('.gameScreen').hide(0);
-        document.getElementById("result").innerHTML = gameStatus;
-        chrome.storage.local.get("adCount", function (f) {
-            document.getElementById("finalScore").innerHTML = f.adCount;
-        })
-    }
+
 
 
     //ADMIN BUTTON- REMOVE FOR PROD

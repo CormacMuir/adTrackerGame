@@ -16,6 +16,11 @@ chrome.runtime.onMessage.addListener((message) => {
         socket.emit("clearRooms");
     } else if (typeof message.readyClick !== 'undefined') {
         socket.emit("readyUp");
+    } else if(message.turnComplete===true){
+        chrome.storage.local.get("adCount", function (f) {
+            socket.emit("turnComplete",f.adCount);
+        })
+        
     }
 })
 
@@ -47,8 +52,6 @@ socket.on('gameReady', (data) => {
     }
 });
 
-
-
 socket.on('setTurn', (data) => {
     if (socket.id == data) {
         chrome.storage.local.set({ 'myTurn': true });
@@ -59,6 +62,17 @@ socket.on('setTurn', (data) => {
 socket.on('initGame', (targetScore) => {
     setupGame(targetScore);
 });
+
+socket.on("gameFinished",(game)=>{
+    console.info(game);
+    chrome.storage.local.set({ 'result': game.result });
+    chrome.storage.local.set({ 'opponnentScore': game.opponnentScore });
+    
+    chrome.storage.local.set({ 'gameStatus': "finished" });
+
+});
+
+
 
 function setupGame(targetScore) {
     chrome.storage.local.clear();

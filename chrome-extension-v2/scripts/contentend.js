@@ -4,7 +4,7 @@ chrome.storage.local.get("waiting", function(f) {
     if (f.waiting == 'valid') {
         setTimeout(() => {
             chrome.storage.local.set({ "waiting": "complete" });
-        }, 5000);
+        }, 2000);
 
     }
 })

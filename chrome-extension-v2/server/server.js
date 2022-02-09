@@ -21,7 +21,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on('joinRoom', (gid) => {
-        console.log("room created: " + gid);
         if (gid == -1) {
             gid = io.sockets.adapter.rooms.size
             var room = 'game' + gid;
@@ -48,10 +47,9 @@ io.on("connection", (socket) => {
     socket.on('gameReadyCheck', () => {
         currentRoom = getCurrentRoom();
         currentRoomPlayers = io.sockets.adapter.rooms.get(currentRoom);
-        console.log(currentRoomPlayers);
         if (currentRoomPlayers.size == 2) {
             io.in(getCurrentRoom()).emit('gameReady', { state: true });
-            var gameData = { userList: Array.from(currentRoomPlayers), current_turn: Math.round(Math.random()), readys: 0 };
+            var gameData = { userList: Array.from(currentRoomPlayers), scores: [0, 0], current_turn: Math.round(Math.random()), readys: 0 };
             users[currentRoom] = gameData;
 
         }
@@ -65,11 +63,31 @@ io.on("connection", (socket) => {
             gameData.readys = 1;
             users[currentRoom] = gameData;
         } else {
-            let targetScore = Math.floor(Math.random() * 20)+10;
-            io.in(currentRoom).emit('initGame',targetScore);
+            let targetScore = Math.floor(Math.random() * 20) + 10;
+            io.in(currentRoom).emit('initGame', targetScore);
             SetTurn(getCurrentRoom());
 
         }
+    });
+
+    socket.on('turnComplete', (score) => {
+        currentRoom = getCurrentRoom();
+        gameData = users[currentRoom];
+        const index = gameData.userList.indexOf(socket.id);
+        
+        gameData.scores[index] = score;
+        console.info(gameData);
+        if (gameData.readys == 1) {
+            gameData.readys = 2;
+            users[currentRoom] = gameData;
+            SetTurn();
+        } else {
+            users[currentRoom] = gameData;
+            gameFinished(gameData);
+        }
+
+
+
     });
 
     function SetTurn() {
@@ -80,6 +98,23 @@ io.on("connection", (socket) => {
         users[currentRoom] = gameData;
     }
 
+    function gameFinished(gameData) {
+        user1 = { id: gameData.userList[0], score: gameData.scores[0] }
+        user2 = { id: gameData.userList[1], score: gameData.scores[1] }
+
+        if (user1.score == user2.score) {
+            io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: user1.score });
+        } else if (user1.score > user2.score) {
+            io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
+        } else if (user2.score > user1.score) {
+            io.to(user1.id).emit('gameFinished', { result: "lose", opponnentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "win", opponnentScore: user1.score });
+
+        }
+
+    }
 
     function getCurrentRoom() {
         return Array.from(socket.rooms).pop();
