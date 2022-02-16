@@ -13,7 +13,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
             let domain = url.hostname
             chrome.storage.local.get("domainHistory", function(f) {
-                if (f.domainHistory.length < g.turn && domain != "newtab") {
+                if (f.domainHistory.length < g.turn && domain != "newtab" && domain != "extensions") {
                     if (f.domainHistory.includes(domain)) {
                         chrome.storage.local.set({ 'error': "true" });
                     } else {
@@ -43,7 +43,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
             if (domain != null) {
                 if (unique_hosts.indexOf(hostname) === -1) {
                     unique_hosts.push(hostname);
-                    if (hostname in tracker_domains || domain in tracker_domains) {
+                    if ((hostname in tracker_domains || domain in tracker_domains) && f.waiting == "valid") {
 
                         chrome.storage.local.get("adCount", function(f) {
                             chrome.storage.local.set({ "adCount": f.adCount + 1 })

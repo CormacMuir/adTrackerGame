@@ -23,3 +23,9 @@ Created stick or twist game, no need for twist button rn as loading a new web pa
 1. Begin to merge multiplayer aspects with my single player game
 2. Look into hosting
 3. Create a dashboard/login system
+
+
+# 16/02
+1. Fix spotted bugs
+2. Create the 2 feature outlined in the user evaluation
+3. Improve aesthetics

@@ -70,3 +70,9 @@ So i have finished working on the standalone socket.io project which includes a 
 Copying all the chrome extension code into a folder called "version2" so that I can attempt to integrate the multiplayer functionality with the current game WITHOUT ruining everything
 
 So after many days and long nights spend trying to integrate socket.io i've deduced some overall problems. The idea of allowing a socket.io connection to survive in a google chrome extension has its limitations. A socket.io client join request is bound to some URL, the chrome extension has no URL as its bound to the browser so I think i'll have to create a react app which will allow the user to access some URL and also allow the user to bind to a particular URL.
+
+Managed to get the socket.io connection to persist without creating a react app. This was done by creating a script with the sole purpose of creating a socket.io connection client side. This javascript file `socket-expose.js` is called by the background.js file (the js file which runs in the background of every chrome session) on chrome startup and because this external js file is referenced in the manifest.json file it means that the `socket` variable is accessible from the rest of the chrome extension.
+
+I finished the first version of the game and therefore decided that I should host it so that testing is made easier and I dont need to try play a game against someone where we are both using the same machine. I went for the platform heroku [link] https://www.heroku.com/ as there was plenty of documentation on it and the setup was very simple, i followed the docs and within a couple hours my socket.io server was fully hosted and functioning.
+
+My plan now is to complete tasks in the following priority: Fix game-breaking bugs, improve general aesthetics of the game and implement the features that were suggested by the user evaluation.

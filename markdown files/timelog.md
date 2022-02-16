@@ -86,3 +86,14 @@ Also added MongoDB and created a db however not integrated yet.
 # 08/02
 **5 hours** Got turn based multiplayer working and first working game, just need to move win conditions to serverside and then first iteration of game should be done
 
+# 09/02 
+**6 hours** Version 1.0.0 finished.
+
+# 12/02
+**4 hours** Created first gameplay user evaluation and conducted with 1 user in coffee shop
+
+# 14/02
+**1 hour** Created dissertation outline and filled in motivation and began thinking about what will fill up background
+
+
+

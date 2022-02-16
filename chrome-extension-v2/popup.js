@@ -1,5 +1,5 @@
 //chrome stuff
-chrome.storage.onChanged.addListener(function (changes, namespace) {
+chrome.storage.onChanged.addListener(function(changes, namespace) {
     for (var key in changes) {
         if (key == "adCount") {
             document.getElementById("adCount").innerHTML = changes['adCount'].newValue;
@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((message) => {
         let btn = document.createElement("button");
         btn.innerHTML = roomid;
         btn.id = roomid;
-        btn.onclick = function () {
+        btn.onclick = function() {
             chrome.runtime.sendMessage({ joinRoom: btn.id });
         };
         lobbySelect.appendChild(btn);
@@ -40,24 +40,24 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-document.getElementById("create").addEventListener("click", function () {
+document.getElementById("create").addEventListener("click", function() {
     chrome.runtime.sendMessage({ createLobby: true });
 });
 
-document.getElementById("readyBtn").addEventListener("click", function () {
+document.getElementById("readyBtn").addEventListener("click", function() {
     chrome.runtime.sendMessage({ 'readyClick': true });
     document.getElementById("readyBtn").disabled = true;
     chrome.storage.local.remove("ready");
 });
 
 
-document.getElementById("stick").addEventListener("click", function () {
+document.getElementById("stick").addEventListener("click", function() {
     chrome.runtime.sendMessage({ 'turnComplete': true })
 });
 
-document.getElementById("twist").addEventListener("click", function () {
+document.getElementById("twist").addEventListener("click", function() {
     chrome.storage.local.set({ "waiting": "true" })
-    chrome.storage.local.get("turn", function (f) {
+    chrome.storage.local.get("turn", function(f) {
         chrome.storage.local.set({ "turn": f.turn + 1 });
     })
     chrome.storage.local.remove("currentURL");
@@ -66,20 +66,20 @@ document.getElementById("twist").addEventListener("click", function () {
 });
 
 
-window.onload = function () {
-    refreshPopup();
-}
-//function which fixed a bug where when the user closes the popup.html
-//the html would be overwritten and would no longer show the updated html
+window.onload = function() {
+        refreshPopup();
+    }
+    //function which fixed a bug where when the user closes the popup.html
+    //the html would be overwritten and would no longer show the updated html
 function refreshPopup() {
-    chrome.storage.local.get("gameStatus", function (f) {
+    chrome.storage.local.get("gameStatus", function(f) {
         if (f.gameStatus == "inProgress") {
             $('#lobbySelect').hide()
             $('#lobby').hide()
-            chrome.storage.local.get("myTurn", function (g) {
+            chrome.storage.local.get("myTurn", function(g) {
                 if (g.myTurn === true) {
                     $('#game').show()
-                    chrome.storage.local.get("waiting", function (f) {
+                    chrome.storage.local.get("waiting", function(f) {
                         if (f.waiting) {
                             $('.gameButtons').hide(0);
 
@@ -87,25 +87,25 @@ function refreshPopup() {
                             $('.awaitingResponse').hide(0);
                         }
                     })
-                    chrome.storage.local.get("adCount", function (f) {
+                    chrome.storage.local.get("adCount", function(f) {
                         document.getElementById("adCount").innerHTML = f.adCount;
                     })
-                    chrome.storage.local.get("goal", function (f) {
+                    chrome.storage.local.get("goal", function(f) {
                         document.getElementById("goal").innerHTML = f.goal;
                     })
-                    chrome.storage.local.get("turn", function (f) {
+                    chrome.storage.local.get("turn", function(f) {
                         if (f.turn == 0) {
                             document.getElementById("stick").disabled = true;
                         }
                     })
-                    chrome.storage.local.get("error", function (f) {
+                    chrome.storage.local.get("error", function(f) {
                         if (f.error == "true") {
                             console.log("showing error");
                             $('#error').show();
                         }
                     })
 
-                    chrome.storage.local.get("currentURL", function (f) {
+                    chrome.storage.local.get("currentURL", function(f) {
 
                         if (f.currentURL) {
                             document.getElementById("currentURL").innerHTML = f.currentURL;
@@ -117,17 +117,16 @@ function refreshPopup() {
             })
         } else if (f.gameStatus == "finished") {
 
-            chrome.storage.local.get("result", function (g) {
+            chrome.storage.local.get("result", function(g) {
                 $('#result').html(g.result);
             })
-            chrome.storage.local.get("opponnentScore", function (g) {
-                alert(g.opponnentScore);
+            chrome.storage.local.get("opponnentScore", function(g) {
                 $('#opponnentScore span').html(g.opponnentScore);
             })
-            chrome.storage.local.get("adCount", function (g) {
+            chrome.storage.local.get("adCount", function(g) {
                 $('#adCount span').html(g.adCount);
             })
-            chrome.storage.local.get("goal", function (g) {
+            chrome.storage.local.get("goal", function(g) {
                 $('#goal span').html(g.goal);
             })
             $('#resultScreen').show()
@@ -135,12 +134,12 @@ function refreshPopup() {
         } else {
             $('#lobbySelect').show()
             chrome.runtime.sendMessage({ getRooms: true });
-            chrome.storage.local.get("lobby", function (f) {
+            chrome.storage.local.get("lobby", function(f) {
                 if (f.lobby) {
                     $('#lobbySelect').hide()
                     $('#lobby').show()
                     document.getElementById("lobbyLabel").innerHTML = f.lobby;
-                    chrome.storage.local.get("ready", function (g) {
+                    chrome.storage.local.get("ready", function(g) {
                         if (g.ready === true) {
                             document.getElementById("readyBtn").disabled = false;
                         }
@@ -155,14 +154,23 @@ function refreshPopup() {
 
 
     //ADMIN BUTTON- REMOVE FOR PROD
-    document.getElementById("admin").addEventListener("click", function () {
-        chrome.storage.local.clear();
+    document.getElementById("admin").addEventListener("click", function() {
         chrome.runtime.sendMessage({ 'clearRooms': true });
-        chrome.storage.local.remove("lobby");
+
         window.location.reload()
+        clearStorage();
 
     });
 }
 
 
+function clearStorage() {
+    chrome.storage.local.remove("currentURL");
+    chrome.storage.local.remove("lobby");
+    chrome.storage.local.remove("domainHistory");
+    chrome.storage.local.remove("turn");
+    chrome.storage.local.remove("result");
+    chrome.storage.local.remove("gameStatus");
 
+
+};
