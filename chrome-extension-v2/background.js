@@ -49,8 +49,6 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
                             chrome.storage.local.set({ "adCount": f.adCount + 1 })
                         })
                         console.log("ad found: " + hostname);
-
-
                     }
                 }
             }

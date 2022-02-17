@@ -1,4 +1,12 @@
-//chrome stuff
+chrome.storage.local.get("username", function(f) {
+    if (!f.username) {
+        x = prompt("Please enter a username!", "Anonymous");
+        chrome.storage.local.set({ "username": String(x) });
+    }
+});
+
+
+
 chrome.storage.onChanged.addListener(function(changes, namespace) {
     for (var key in changes) {
         if (key == "adCount") {
@@ -21,14 +29,20 @@ chrome.runtime.onMessage.addListener((message) => {
 
     } else if (typeof message.addRoom !== 'undefined') {
         roomid = message.addRoom;
-        var lobbySelect = document.getElementById("lobbySelect");
+        var activeGames = document.getElementById("activeGames");
         let btn = document.createElement("button");
+        btn.setAttribute("class", "list-group-item list-group-item-action active");
         btn.innerHTML = roomid;
         btn.id = roomid;
         btn.onclick = function() {
             chrome.runtime.sendMessage({ joinRoom: btn.id });
         };
-        lobbySelect.appendChild(btn);
+        activeGames.appendChild(btn);
+
+
+
+
+
     } else if (typeof message.removeRoom !== 'undefined') {
         roomid = message.removeRoom;
         let btn = document.getElementById(roomid);
@@ -40,7 +54,7 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-document.getElementById("create").addEventListener("click", function() {
+document.getElementById("createbtn").addEventListener("click", function() {
     chrome.runtime.sendMessage({ createLobby: true });
 });
 

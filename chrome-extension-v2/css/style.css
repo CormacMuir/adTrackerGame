@@ -1,20 +1,45 @@
+html {
+    width: 350px;
+    height: 400px;
+}
+
+body {
+    background-color: light grey !important;
+}
+
 #game {
     display: none;
 }
+
 #error {
     display: none;
 }
-#waitingForOpponent{
-    display:none;
+
+#waitingForOpponent {
+    display: none;
 }
+
 #resultScreen {
     display: none;
 }
+
 #lobby {
     display: none;
 }
+
 #lobbySelect {
     display: none;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+#createbtnDiv {
+    padding-top: 10px;
+}
+
+#admin {
+    position: absolute;
+    bottom: 0px;
 }
 
 #gameScreen p {
@@ -40,6 +65,11 @@
     border: 0;
     margin: 0;
     color: #5fb3ed
+}
+
+#gameSelectTitle {
+    text-align: center;
+    padding-top: 10px;
 }
 
 #stick,
