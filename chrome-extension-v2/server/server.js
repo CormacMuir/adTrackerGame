@@ -11,7 +11,7 @@ const { Server } = require("socket.io"), { createServer } = require("http"),
     });
 
 
-let rooms = []
+let rooms = {}
 let users = {}
 
 io.on("connection", (socket) => {
@@ -19,29 +19,30 @@ io.on("connection", (socket) => {
     socket.on("getRooms", () => {
         socket.emit('populateRooms', rooms);
     });
+    
 
-    socket.on('joinRoom', (gid) => {
+    socket.on('joinRoom', (gid,username=null) => {
         if (gid == -1) {
             gid = io.sockets.adapter.rooms.size
             var room = 'game' + gid;
             socket.join(room);
-            rooms.push(room);
-            io.emit('roomRefresh', { roomid: room, action: "add" });
-            socket.emit('joinGameLobby', room)
+            rooms[room] = username;
+            io.emit('roomRefresh', { roomid: room, action: "add",creator:username });
+            socket.emit('joinGameLobby', { roomid:room,creator:username});
 
 
         } else {
             socket.join(gid);
             io.emit('roomRefresh', { roomid: gid, action: "remove" });
-            const index = rooms.indexOf(gid);
-            rooms.splice(index, 1);
-            socket.emit('joinGameLobby', gid)
+            var username = rooms[gid];
+            delete rooms[gid];
+            socket.emit('joinGameLobby', { roomid: gid, creator: username });
         }
 
     });
 
     socket.on("clearRooms", () => {
-        rooms = [];
+        rooms = {}
     });
 
     socket.on('gameReadyCheck', () => {
@@ -49,7 +50,7 @@ io.on("connection", (socket) => {
         currentRoomPlayers = io.sockets.adapter.rooms.get(currentRoom);
         if (currentRoomPlayers.size == 2) {
             io.in(getCurrentRoom()).emit('gameReady', { state: true });
-            var gameData = { userList: Array.from(currentRoomPlayers), scores: [0, 0], current_turn: Math.round(Math.random()), readys: 0 };
+            var gameData = { userList: Array.from(currentRoomPlayers), scores: [0, 0], current_turn: Math.round(Math.random()), readys: 0,goal:0 };
             users[currentRoom] = gameData;
 
         }
@@ -64,6 +65,9 @@ io.on("connection", (socket) => {
             users[currentRoom] = gameData;
         } else {
             let targetScore = Math.floor(Math.random() * 20) + 10;
+            gameData = users[currentRoom];
+            gameData.goal = targetScore;
+            users[currentRoom] = gameData;
             io.in(currentRoom).emit('initGame', targetScore);
             SetTurn(getCurrentRoom());
 
@@ -99,10 +103,22 @@ io.on("connection", (socket) => {
     }
 
     function gameFinished(gameData) {
+        targetScore = users[currentRoom].goal;
+        
         user1 = { id: gameData.userList[0], score: gameData.scores[0] }
         user2 = { id: gameData.userList[1], score: gameData.scores[1] }
 
-        if (user1.score == user2.score) {
+        if(user1.score > targetScore && user2.score>targetScore){
+            io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: "BUST" });
+            io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: "BUST" });
+        }else if(user1.score>targetScore){
+            io.to(user1.id).emit('gameFinished', { result: "lose", opponnentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
+        }else if(user2.score>targetScore){
+            io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
+            io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
+        }
+        else if (user1.score == user2.score) {
             io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: user2.score });
             io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: user1.score });
         } else if (user1.score > user2.score) {

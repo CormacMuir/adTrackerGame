@@ -95,5 +95,8 @@ Also added MongoDB and created a db however not integrated yet.
 # 14/02
 **1 hour** Created dissertation outline and filled in motivation and began thinking about what will fill up background
 
+# 24/02/2022
+**4 hours** Wrote css and got improved server logic working
+
 
 
