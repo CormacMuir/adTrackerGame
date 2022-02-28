@@ -138,7 +138,13 @@ function refreshPopup() {
         } else if (f.gameStatus == "finished") {
 
             chrome.storage.local.get("result", function (g) {
-                $('#result').html(g.result);
+                var r = $('#result');
+                r.html(g.result);
+                if(g.result=="win"){
+                    r.css('color', 'green');
+                }else if(g.result=="lose"){
+                    r.css('color', 'red');
+                }
             })
             chrome.storage.local.get("opponnentScore", function (g) {
                 $('#opponnentScore span').html(g.opponnentScore);

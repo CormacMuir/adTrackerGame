@@ -9,8 +9,20 @@ const { Server } = require("socket.io"), { createServer } = require("http"),
         },
         allowEIO3: true
     });
+const mysql = require('mysql');
 
-
+const connection = mysql.createConnection({
+    host:'us-cdbr-east-05.cleardb.net',
+    user:'b03851587ae154',
+    password:'5cb8ad8a',
+    database:'heroku_6e85a026a1900c7'
+})
+connection.query('SELECT * FROM user WHERE id = "a"',(error,rows)=>{
+    if(error) throw error;
+    if(!error){
+        console.log(rows)
+    }
+})
 let rooms = {}
 let users = {}
 

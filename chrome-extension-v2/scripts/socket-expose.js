@@ -85,6 +85,7 @@ socket.on("gameFinished", (game) => {
 
 
 function setupGame(targetScore) {
+    chrome.storage.local.remove('waiting');
     chrome.storage.local.set({ 'adCount': 0 });
     chrome.storage.local.set({ 'turn': 0 });
     chrome.storage.local.set({ 'goal': targetScore });

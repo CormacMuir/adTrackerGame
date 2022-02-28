@@ -4,7 +4,7 @@
 }
 
 html {
-    width: 350px;
+    width: 360px;
     height: 400px;
 }
 
@@ -32,9 +32,27 @@ body {
     bottom:35px;
     left: 75px;
 }
+#home{
+    background: none;
+    height:56px;
+    width:60px;
+    position:absolute;
+    top:0px;
+    left:0px;
+    background-image: url('../imgs/home-icon.png');
+    background-position: center;
+}
 
 #resultScreen {
+    
     display: none;
+    text-align: center;
+}
+#resultInfo{
+    padding-top:90px;
+}
+#resultInfo h2{
+    padding-bottom:10px;
 }
 
 #lobby {
