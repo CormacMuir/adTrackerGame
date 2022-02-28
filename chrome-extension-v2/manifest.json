@@ -22,10 +22,12 @@
     ],
     "background": {
         "scripts": [
+            "scripts/setup.js",
             "background.js",
             "scripts/trackerlist.js",
             "scripts/socket.io.js",
             "scripts/socket-expose.js"
+
         ]
     },
     "content_scripts": [{

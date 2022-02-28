@@ -2,11 +2,16 @@
 //const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
 //local connection for dev purposes
 const socket = io.connect("http://localhost:3000");
+chrome.storage.local.get("uid", function(f) {
+    socket.emit("dbCheck", f.uid)
+});
+
+
 
 chrome.runtime.onMessage.addListener((message) => {
     if (message.createLobby === true) {
         chrome.storage.local.get("username", function(f) {
-        socket.emit('joinRoom', -1,f.username)
+            socket.emit('joinRoom', -1, f.username)
         });
     } else if (typeof message.joinRoom !== 'undefined') {
         socket.emit('joinRoom', message.joinRoom);
@@ -33,7 +38,7 @@ socket.on('populateRooms', (roomList) => {
         data.roomid = key;
         data.creator = roomList[key];
         chrome.runtime.sendMessage({ addRoom: data });
-      });
+    });
 
 })
 socket.on('roomRefresh', (data) => {

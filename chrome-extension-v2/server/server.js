@@ -12,14 +12,16 @@ const { Server } = require("socket.io"), { createServer } = require("http"),
 const { database } = require('./config/helpers');
 
 let rooms = {}
-let users = {}
+let games = {}
 
 io.on("connection", (socket) => {
-
+    socket.on("dbCheck", (id) => {
+        rooms = {}
+    });
     database.table('user').withFields(['id', 'name']).getAll().then(data => {
-        console.info(Object.keys(data).length);
-        console.info(data);
-    })
+            console.info(Object.keys(data).length);
+            console.info(data);
+        })
         .catch(err => console.log(err))
 
 
@@ -32,7 +34,7 @@ io.on("connection", (socket) => {
 
     //database.query('INSERT INTO user (id, name) VALUES ("g", "simon");')
 
-  
+
 
     console.info(`Client connected [id=${socket.id}]`);
     socket.on("getRooms", () => {
@@ -70,7 +72,7 @@ io.on("connection", (socket) => {
         if (currentRoomPlayers.size == 2) {
             io.in(getCurrentRoom()).emit('gameReady', { state: true });
             var gameData = { userList: Array.from(currentRoomPlayers), scores: [0, 0], current_turn: Math.round(Math.random()), readys: 0, goal: 0 };
-            users[currentRoom] = gameData;
+            games[currentRoom] = gameData;
 
         }
 
@@ -78,15 +80,15 @@ io.on("connection", (socket) => {
 
     socket.on('readyUp', () => {
         currentRoom = getCurrentRoom();
-        gameData = users[currentRoom];
+        gameData = games[currentRoom];
         if (gameData.readys == 0) {
             gameData.readys = 1;
-            users[currentRoom] = gameData;
+            games[currentRoom] = gameData;
         } else {
             let targetScore = Math.floor(Math.random() * 20) + 10;
-            gameData = users[currentRoom];
+            gameData = games[currentRoom];
             gameData.goal = targetScore;
-            users[currentRoom] = gameData;
+            games[currentRoom] = gameData;
             io.in(currentRoom).emit('initGame', targetScore);
             SetTurn(getCurrentRoom());
 
@@ -95,17 +97,17 @@ io.on("connection", (socket) => {
 
     socket.on('turnComplete', (score) => {
         currentRoom = getCurrentRoom();
-        gameData = users[currentRoom];
+        gameData = games[currentRoom];
         const index = gameData.userList.indexOf(socket.id);
 
         gameData.scores[index] = score;
         console.info(gameData);
         if (gameData.readys == 1) {
             gameData.readys = 2;
-            users[currentRoom] = gameData;
+            games[currentRoom] = gameData;
             SetTurn();
         } else {
-            users[currentRoom] = gameData;
+            games[currentRoom] = gameData;
             gameFinished(gameData);
         }
 
@@ -115,14 +117,14 @@ io.on("connection", (socket) => {
 
     function SetTurn() {
         currentRoom = getCurrentRoom();
-        gameData = users[currentRoom];
+        gameData = games[currentRoom];
         io.in(currentRoom).emit('setTurn', gameData.userList[gameData.current_turn]);
         gameData.current_turn = 1 - gameData.current_turn;
-        users[currentRoom] = gameData;
+        games[currentRoom] = gameData;
     }
 
     function gameFinished(gameData) {
-        targetScore = users[currentRoom].goal;
+        targetScore = games[currentRoom].goal;
 
         user1 = { id: gameData.userList[0], score: gameData.scores[0] }
         user2 = { id: gameData.userList[1], score: gameData.scores[1] }
@@ -136,8 +138,7 @@ io.on("connection", (socket) => {
         } else if (user2.score > targetScore) {
             io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
             io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
-        }
-        else if (user1.score == user2.score) {
+        } else if (user1.score == user2.score) {
             io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: user2.score });
             io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: user1.score });
         } else if (user1.score > user2.score) {
