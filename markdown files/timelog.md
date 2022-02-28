@@ -98,5 +98,11 @@ Also added MongoDB and created a db however not integrated yet.
 # 24/02/2022
 **4 hours** Wrote css and got improved server logic working
 
+# 25/02/2022
+**3 hours** Fixed all known bugs, imported new font and added pngs and finished off css. Iteration 1 complete.
+
+# 26/02/2022
+**4 hours** Created and linked MySql database
+
 
 
