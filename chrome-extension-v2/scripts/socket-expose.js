@@ -2,7 +2,7 @@
 //const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
 //local connection for dev purposes
 const socket = io.connect("http://localhost:3000");
-chrome.storage.local.get("uid", function(f) {
+chrome.storage.local.get("uid", function (f) {
     socket.emit("dbCheck", f.uid)
 });
 
@@ -10,11 +10,13 @@ chrome.storage.local.get("uid", function(f) {
 
 chrome.runtime.onMessage.addListener((message) => {
     if (message.createLobby === true) {
-        chrome.storage.local.get("username", function(f) {
+        chrome.storage.local.get("username", function (f) {
             socket.emit('joinRoom', -1, f.username)
         });
     } else if (typeof message.joinRoom !== 'undefined') {
-        socket.emit('joinRoom', message.joinRoom);
+        chrome.storage.local.get("username", function (f) {
+            socket.emit('joinRoom', message.joinRoom, f.username);
+        });
         chrome.runtime.sendMessage({ updateLobbyLabel: message.joinRoom });
 
     } else if (message.getRooms === true) {
@@ -24,16 +26,17 @@ chrome.runtime.onMessage.addListener((message) => {
     } else if (typeof message.readyClick !== 'undefined') {
         socket.emit("readyUp");
     } else if (message.turnComplete === true) {
-        chrome.storage.local.get("adCount", function(f) {
+        chrome.storage.local.get("adCount", function (f) {
             socket.emit("turnComplete", f.adCount);
         })
-
+    } else if (message.getStats === true) {
+        socket.emit("getPlayerStats");
     }
 })
 
 socket.on('populateRooms', (roomList) => {
 
-    Object.keys(roomList).forEach(function(key) {
+    Object.keys(roomList).forEach(function (key) {
         data = {};
         data.roomid = key;
         data.creator = roomList[key];
@@ -66,6 +69,11 @@ socket.on('gameReady', (data) => {
     }
 });
 
+socket.on("stats", (data) => {
+    console.log(data);
+    chrome.storage.local.set({ 'profileData': data })
+})
+
 socket.on('setTurn', (data) => {
     if (socket.id == data) {
         chrome.storage.local.set({ 'myTurn': true });
@@ -79,7 +87,6 @@ socket.on('initGame', (targetScore) => {
 });
 
 socket.on("gameFinished", (game) => {
-    console.info(game);
     chrome.storage.local.set({ 'result': game.result });
     chrome.storage.local.set({ 'opponnentScore': game.opponnentScore });
 

@@ -8,7 +8,7 @@
 
 <body>
     <div id="lobbySelect">
-
+        <button id="profileBtn"></button>
         <h3 id="gameSelectTitle">Active Games</h3>
         <div id="activeGamesDiv">
             <div id="activeGames" class="list-group">
@@ -17,6 +17,14 @@
         <div id="createbtnDiv">
             <button type="button" id="createbtn" class="btn btn-success">Create</button>
         </div>
+    </div>
+    <div id="profile">
+        <h2><u>Game Stats</u></h2>
+        <p id="totalGames">Games played:<span></span></p>
+        <p id="wins">Wins:<span>None</span></p>
+        <p id="ties">Draws:<span>None</span></p>
+        <p id="losses">Losses:<span>None</span></p>
+        <p id="trackers">Total Ad Trackers Found:<span>None</span></p>
     </div>
     <div id="lobby">
         <h4 id="lobbyLabel"></h4>
@@ -53,8 +61,9 @@
         <h2>Waiting for other player to make move...</h1>
             <img src='imgs/Spinner-1s-200px.gif' />
     </div>
+    <button id="homeBtn"></button>
     <div id="resultScreen">
-        <button id="home"></button>
+        
         <div id="resultInfo">
             <h2 id=result></h2>
             <p id="goal">Ad tracker goal:<span></span></p>

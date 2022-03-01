@@ -8,6 +8,10 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             window.location.reload();
         } else if (key == "gameStatus") {
             window.location.reload();
+        } else if (key == "profile") {
+            window.location.reload();
+        } else if(key=="profileData"){
+            alert("data received");
         }
 
     }
@@ -33,9 +37,6 @@ chrome.runtime.onMessage.addListener((message) => {
         activeGames.appendChild(btn);
 
 
-
-
-
     } else if (typeof message.removeRoom !== 'undefined') {
         roomid = message.removeRoom;
         let btn = document.getElementById(roomid);
@@ -47,23 +48,23 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-document.getElementById("createbtn").addEventListener("click", function () {
+$("#createbtn").click(function () {
     chrome.runtime.sendMessage({ createLobby: true });
 });
 
-document.getElementById("readyBtn").addEventListener("click", function () {
+$("#readyBtn").click(function () {
     chrome.runtime.sendMessage({ 'readyClick': true });
     $('#readyBtn').hide();
     $('#ready-div').show();
-    chrome.storage.local.set({"ready":"waiting"});
+    chrome.storage.local.set({ "ready": "waiting" });
 });
 
 
-document.getElementById("stick").addEventListener("click", function () {
+$("#stick").click(function () {
     chrome.runtime.sendMessage({ 'turnComplete': true })
 });
 
-document.getElementById("twist").addEventListener("click", function () {
+$("#twist").click(function () {
     chrome.storage.local.set({ "waiting": "true" })
     chrome.storage.local.get("turn", function (f) {
         chrome.storage.local.set({ "turn": f.turn + 1 });
@@ -73,15 +74,21 @@ document.getElementById("twist").addEventListener("click", function () {
     window.location.reload();
 });
 
-document.getElementById("home").addEventListener("click", function () {
+$("#homeBtn").click(function () {
     chrome.storage.local.remove("lobby");
     chrome.storage.local.remove("gameStatus");
+    chrome.storage.local.remove("profile");
+});
+$("#profileBtn").click(function () {
+    chrome.runtime.sendMessage({ getStats: true });
+    chrome.storage.local.set({ 'profile': true });
 });
 
 
 window.onload = function () {
     refreshPopup();
 }
+
 //function which fixed a bug where when the user closes the popup.html
 //the html would be overwritten and would no longer show the updated html
 function refreshPopup() {
@@ -93,6 +100,7 @@ function refreshPopup() {
     });
 
     chrome.storage.local.get("gameStatus", function (f) {
+
         if (f.gameStatus == "inProgress") {
             $('#lobbySelect').hide()
             $('#lobby').hide()
@@ -140,9 +148,9 @@ function refreshPopup() {
             chrome.storage.local.get("result", function (g) {
                 var r = $('#result');
                 r.html(g.result);
-                if(g.result=="win"){
+                if (g.result == "win") {
                     r.css('color', 'green');
-                }else if(g.result=="lose"){
+                } else if (g.result == "lose") {
                     r.css('color', 'red');
                 }
             })
@@ -158,19 +166,38 @@ function refreshPopup() {
             $('#resultScreen').show()
 
         } else {
-            $('#lobbySelect').show()
-            chrome.runtime.sendMessage({ getRooms: true });
-            chrome.storage.local.get("lobby", function (f) {
-                if (f.lobby) {
-                    $('#lobbySelect').hide()
-                    $('#lobby').show()
-                    document.getElementById("lobbyLabel").innerHTML = f.lobby + "'s Game";
-                    chrome.storage.local.get("ready", function (g) {
-                        if (g.ready == "waiting") {
-                            $('#readyBtn').hide();
-                            $('#ready-div').show();
-                        }else if(g.ready=="available"){
-                            $('#readyBtn').prop('disabled', false);
+            chrome.storage.local.get("profile", function (f) {
+                if (f.profile) {
+                    $('#profile').show()
+                    $('#homeBtn').show()
+
+                    chrome.storage.local.get("profileData", function (f) {
+                        if (f.profileData) {
+                            $('#totalGames span').html(f.profileData.games_played);
+                            $('#wins span').html(f.profileData.wins);
+                            $('#ties span').html(f.profileData.draws);
+                            $('#losses span').html(f.profileData.losses);
+                            $('#trackers span').html(f.profileData.trackers);
+                        }
+                    })
+
+                } else {
+
+                    $('#lobbySelect').show()
+                    chrome.runtime.sendMessage({ getRooms: true });
+                    chrome.storage.local.get("lobby", function (f) {
+                        if (f.lobby) {
+                            $('#lobbySelect').hide()
+                            $('#lobby').show()
+                            document.getElementById("lobbyLabel").innerHTML = f.lobby + "'s Game";
+                            chrome.storage.local.get("ready", function (g) {
+                                if (g.ready == "waiting") {
+                                    $('#readyBtn').hide();
+                                    $('#ready-div').show();
+                                } else if (g.ready == "available") {
+                                    $('#readyBtn').prop('disabled', false);
+                                }
+                            })
                         }
                     })
                 }

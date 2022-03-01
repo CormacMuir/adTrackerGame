@@ -32,14 +32,25 @@ body {
     bottom:35px;
     left: 75px;
 }
-#home{
+#homeBtn{
+    display:none;
     background: none;
-    height:56px;
-    width:60px;
+    height:50px;
+    width:47px;
     position:absolute;
-    top:0px;
-    left:0px;
+    top:5px;
+    left:5px;
     background-image: url('../imgs/home-icon.png');
+    background-position: center;
+}
+#profileBtn{
+    background: none;
+    height:50px;
+    width:50px;
+    position:absolute;
+    top:5px;
+    left:5px;
+    background-image: url('../imgs/profile.png');
     background-position: center;
 }
 
@@ -47,6 +58,11 @@ body {
     
     display: none;
     text-align: center;
+}
+#profile{
+    display:none;
+    text-align:center;
+    padding-top: 65px;
 }
 #resultInfo{
     padding-top:90px;

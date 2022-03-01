@@ -104,5 +104,11 @@ Also added MongoDB and created a db however not integrated yet.
 # 26/02/2022
 **4 hours** Created and linked MySql database
 
+# 27/02/2022
+**2 hours** Refined database and wrote more sql
+
+# 01/03
+**5 hours** Created profile stats page and added all database lookups nececessary
+
 
 

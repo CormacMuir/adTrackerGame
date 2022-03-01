@@ -11,38 +11,29 @@ const { Server } = require("socket.io"), { createServer } = require("http"),
     });
 const { database } = require('./config/helpers');
 
-let rooms = {}
-let games = {}
+rooms = {}
+games = {}
+socketIDtoDbID = {}
 
 io.on("connection", (socket) => {
-    socket.on("dbCheck", (id) => {
-        rooms = {}
+
+    socket.on("dbCheck", (uid) => {
+        database.table('user').filter({ id: uid }).getAll().then(data => {
+            if (data.length == 0) {
+                database.query('INSERT INTO user (id) VALUES ("' + uid + '");')
+            }
+        });
+        socketIDtoDbID[socket.id] = uid;
+
     });
-    database.table('user').withFields(['id', 'name']).getAll().then(data => {
-            console.info(Object.keys(data).length);
-            console.info(data);
-        })
-        .catch(err => console.log(err))
-
-
-    // database.table('user')
-    //     .filter({ name: { $sql: '="simon"' } })
-    //     .remove()
-    //     .then(res => {
-    //         console.log(res)
-    //     })
-
-    //database.query('INSERT INTO user (id, name) VALUES ("g", "simon");')
-
-
 
     console.info(`Client connected [id=${socket.id}]`);
     socket.on("getRooms", () => {
         socket.emit('populateRooms', rooms);
     });
 
-
     socket.on('joinRoom', (gid, username = null) => {
+        checkDatabaseUsername(username, socketIDtoDbID[socket.id]);
         if (gid == -1) {
             gid = io.sockets.adapter.rooms.size
             var room = 'game' + gid;
@@ -62,6 +53,11 @@ io.on("connection", (socket) => {
 
     });
 
+    socket.on("getPlayerStats", () => {
+        uid = socketIDtoDbID[socket.id]
+        stats = getPlayerStats(uid);
+    });
+
     socket.on("clearRooms", () => {
         rooms = {}
     });
@@ -71,7 +67,14 @@ io.on("connection", (socket) => {
         currentRoomPlayers = io.sockets.adapter.rooms.get(currentRoom);
         if (currentRoomPlayers.size == 2) {
             io.in(getCurrentRoom()).emit('gameReady', { state: true });
-            var gameData = { userList: Array.from(currentRoomPlayers), scores: [0, 0], current_turn: Math.round(Math.random()), readys: 0, goal: 0 };
+            var gameData = {
+                userList: Array.from(currentRoomPlayers),
+                scores: [0, 0],
+                current_turn: Math.round(Math.random()),
+                readys: 0,
+                goal: 0,
+                starttime: new Date().toISOString().slice(0, 19).replace('T', ' ')
+            };
             games[currentRoom] = gameData;
 
         }
@@ -101,18 +104,20 @@ io.on("connection", (socket) => {
         const index = gameData.userList.indexOf(socket.id);
 
         gameData.scores[index] = score;
-        console.info(gameData);
         if (gameData.readys == 1) {
             gameData.readys = 2;
             games[currentRoom] = gameData;
             SetTurn();
         } else {
             games[currentRoom] = gameData;
-            gameFinished(gameData);
+            winner = gameFinished(gameData);
+            writeGameToDatabase({
+                winner: winner,
+                starttime: gameData.starttime,
+                user1: socketIDtoDbID[gameData.userList[0]],
+                user2: socketIDtoDbID[gameData.userList[1]]
+            })
         }
-
-
-
     });
 
     function SetTurn() {
@@ -132,33 +137,69 @@ io.on("connection", (socket) => {
         if (user1.score > targetScore && user2.score > targetScore) {
             io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: "BUST" });
             io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: "BUST" });
+            return "tie";
         } else if (user1.score > targetScore) {
             io.to(user1.id).emit('gameFinished', { result: "lose", opponnentScore: user2.score });
             io.to(user2.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
+            return socketIDtoDbID[user2.id];
         } else if (user2.score > targetScore) {
             io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
             io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
+            return socketIDtoDbID[user1.id];
         } else if (user1.score == user2.score) {
             io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: user2.score });
             io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: user1.score });
+            return "tie";
         } else if (user1.score > user2.score) {
             io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: user2.score });
             io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
+            return socketIDtoDbID[user1.id];
         } else if (user2.score > user1.score) {
             io.to(user1.id).emit('gameFinished', { result: "lose", opponnentScore: user2.score });
             io.to(user2.id).emit('gameFinished', { result: "win", opponnentScore: user1.score });
+            return socketIDtoDbID[user2.id];
 
         }
-
     }
-
     function getCurrentRoom() {
         return Array.from(socket.rooms).pop();
     }
+    function checkDatabaseUsername(username, uid) {
+        database.table('user').filter({ id: String(uid) }).getAll().then(data => {
+            if (data[0].name == null) {
+                database.query('UPDATE user SET name= "' + username + '" WHERE id = "' + uid + '";')
+            } else {
+            }
+        });
+    }
+    function writeGameToDatabase(data) {
+        finishtime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        database.query(`INSERT into game_history (user1,user2,winner,start,finish)VALUES ("${data.user1}","${data.user2}","${data.winner}","${data.starttime}","${finishtime}");`)
+    }
 
+    function getPlayerStats(uid) {
+        console.log("getting stats");
+        playerStats = {}
+        database.table('game_history').filter({ $or: [{ user1: uid }, { user2: uid }] }).sort({ finish: 1 }).getAll().then(data => {
+            playerStats.games_played = data.length;
+            playerStats.wins = 0;
+            playerStats.draws = 0;
+            for (var i = 0; i < data.length; i++) {
+
+                if (data[i].winner == uid) {
+                    playerStats.wins++;
+                } else if (data[i].winner == "tie") {
+                    playerStats.draws++;
+                }
+            }
+            playerStats.losses = playerStats.games_played - (playerStats.wins + playerStats.draws);
+            console.log(playerStats);
+            socket.emit("stats", playerStats);
+        });
+    }
 
     socket.on("disconnect", () => {
-        console.info(`Client gone [id=${socket.id}]`);
+        delete socketIDtoDbID[socket.id]
     });
 });
 httpServer.listen(process.env.PORT || 3000);
