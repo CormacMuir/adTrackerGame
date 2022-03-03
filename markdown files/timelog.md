@@ -110,5 +110,13 @@ Also added MongoDB and created a db however not integrated yet.
 # 01/03
 **5 hours** Created profile stats page and added all database lookups nececessary
 
+# 02/03
+**4 hours** wrote intro in diss
+
+# 03/03
+**3 hours** created log database
+**1.5 hours** created "how to play" file
+**1 hour** fixed logging bugs
+
 
 

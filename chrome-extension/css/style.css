@@ -1,0 +1,177 @@
+@font-face {
+    font-family: 'start2P';
+    src: url('../font/PressStart2P-Regular.ttf');
+}
+
+html {
+    width: 360px;
+    height: 400px;
+}
+
+body {
+    font-family: 'start2P' !important;
+    background-color: light grey !important;
+    height:100% !important;
+    width:100% !important;
+}
+
+#game {
+    display: none;
+}
+
+#error {
+    display: none;
+}
+
+#waitingForOpponent {
+    padding-top: 20px;
+    display: none;
+    text-align: center;
+}
+#waitingForOpponent img {
+    position:absolute;
+    bottom:35px;
+    left: 75px;
+}
+#homeBtn{
+    display:none;
+    background: none;
+    height:50px;
+    width:47px;
+    position:absolute;
+    top:5px;
+    left:5px;
+    background-image: url('../imgs/home-icon.png');
+    background-position: center;
+}
+#profileBtn{
+    background: none;
+    height:50px;
+    width:50px;
+    position:absolute;
+    top:5px;
+    left:5px;
+    background-image: url('../imgs/profile.png');
+    background-position: center;
+}
+
+#resultScreen {
+    
+    display: none;
+    text-align: center;
+}
+#profile{
+    display:none;
+    text-align:left;
+    padding-top: 65px;
+    padding-left: 5px;
+}
+#profile h2{
+    
+    text-align:center;
+    padding-bottom: 10px;
+    
+}
+#resultInfo{
+    padding-top:90px;
+}
+#resultInfo h2{
+    padding-bottom:10px;
+}
+
+#lobby {
+    width:100%;
+    height: 100%;
+    display: none;
+}
+
+#activeGames button {
+    text-align: center;
+    font-size: small;
+
+
+}
+
+#lobbySelect {
+    display: none;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+#lobbyLabel{
+    text-align: center;
+}
+#readyBtnDiv{
+    padding-top:50px;
+    text-align: center;
+}
+#ready-img{
+    height:20%;
+    width:20%;
+    padding-bottom: 30px;
+}
+#ready-div{
+    display:none;
+}
+#ready-text{
+    
+    color:green;
+}
+
+#createbtnDiv {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
+
+#admin {
+    position: absolute;
+    bottom: 0px;
+    right:0px
+}
+
+#gameScreen p {
+    text-align: center;
+
+    font-size: large;
+    font-weight: bold;
+    padding-top:20px
+}
+
+.awaitingResponse {
+    text-align: center;
+    padding: 30px;
+}
+
+.awaitingResponse img {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+}
+
+.awaitingResponse p {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    color: #5fb3ed
+}
+
+#gameSelectTitle {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom:10px;
+}
+
+#stick,
+#twist {
+    width: 45%
+}
+
+#twist {
+    align-self: right;
+}
+
+.gameButtons {
+    margin: 10%;
+    align-items: center;
+}
