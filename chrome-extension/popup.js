@@ -10,12 +10,25 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             window.location.reload();
         } else if (key == "profile") {
             window.location.reload();
-        } else if (key == "profileData"){
+        } else if (key == "profileData") {
             window.location.reload();
-        }else if(key=="currentURL"){
-            if(typeof changes['currentURL']!= "undefined"){
-                chrome.runtime.sendMessage({ 'log': `Visited website: ${changes['currentURL'].newValue}` })
+        } else if (key == "lobby") {
+            window.location.reload();
+        } else if (key == "opponentUsername") {
+
+            if (typeof changes['opponentUsername'].newValue == 'undefined') {
+                $('#noOpponentIcon').show()
+                $('#opponentLabel').hide()
             }else{
+                $('#noOpponentIcon').hide()
+                $('#opponentLabel p').html(changes['opponentUsername'].newValue);
+            }
+
+        }
+        else if (key == "currentURL") {
+            if (typeof changes['currentURL'] != "undefined") {
+                chrome.runtime.sendMessage({ 'log': `Visited website: ${changes['currentURL'].newValue}` })
+            } else {
                 console.log(typeof changes['currentURL'])
             }
         }
@@ -43,8 +56,12 @@ chrome.runtime.onMessage.addListener((message) => {
         btn.remove();
     } else if (typeof message.updateLobbyLabel !== 'undefined') {
         document.getElementById("lobbyLabel").innerHTML = message.updateLobbyLabel;
-    } else if (message.readyUp === true) {
-        $('#readyBtn').prop('disabled', false);
+    } else if (typeof message.readyUp !== 'undefined') {
+        if (message.readyUp == true) {
+            $('#readyBtn').prop('disabled', false);
+        } else {
+            $('#readyBtn').prop('disabled', true);
+        }
     }
 });
 $("#createbtn").click(function () {
@@ -76,10 +93,18 @@ $("#twist").click(function () {
 });
 
 $("#homeBtn").click(function () {
-    chrome.runtime.sendMessage({ 'log': "Home button pressed" })
+    chrome.storage.local.get("lobby", function (f) {
+        if (f.lobby) {
+            chrome.runtime.sendMessage({ 'leaveLobby': true })
+        } else {
+            chrome.storage.local.remove("opponentUsername");
+        }
+    })
     chrome.storage.local.remove("lobby");
+    chrome.runtime.sendMessage({ 'log': "Home button pressed" })
     chrome.storage.local.remove("gameStatus");
     chrome.storage.local.remove("profile");
+
 });
 $("#profileBtn").click(function () {
     chrome.runtime.sendMessage({ getStats: true });
@@ -142,7 +167,11 @@ function refreshPopup() {
                         }
                     })
                 } else if (g.myTurn === false) {
+                    chrome.storage.local.get("opponentUsername", function (g) {
+                    $('#waitingUsername').html(g.opponentUsername)
+                    })
                     $('#waitingForOpponent').show()
+                    
                 }
             })
         } else if (f.gameStatus == "finished") {
@@ -189,10 +218,18 @@ function refreshPopup() {
                         if (f.lobby) {
                             $('#lobbySelect').hide()
                             $('#lobby').show()
+                            $('#homeBtn').show()
                             document.getElementById("lobbyLabel").innerHTML = f.lobby + "'s Game";
+                            chrome.storage.local.get("opponentUsername", function (g) {
+                                if (g.opponentUsername) {
+                                    $('#noOpponentIcon').hide()
+                                    $('#opponentLabel p').html(g.opponentUsername);
+                                }
+                            })
                             chrome.storage.local.get("ready", function (g) {
                                 if (g.ready == "waiting") {
                                     $('#readyBtn').hide();
+                                    $('#lobbyPlayers').hide();
                                     $('#ready-div').show();
                                 } else if (g.ready == "available") {
                                     $('#readyBtn').prop('disabled', false);
@@ -219,5 +256,6 @@ function clearStorage() {
     chrome.storage.local.remove("turn");
     chrome.storage.local.remove("result");
     chrome.storage.local.remove("gameStatus");
+    chrome.storage.local.remove("opponentUsername");
 
 };

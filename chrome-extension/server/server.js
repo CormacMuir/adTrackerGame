@@ -24,6 +24,8 @@ io.on("connection", (socket) => {
                 database.query('INSERT INTO user (id) VALUES ("' + uid + '");')
                 createLog("User connected for first time");
             }
+        }).catch(err => {
+            console.log(err);
         });
         socketIDtoDbID[socket.id] = uid;
 
@@ -65,12 +67,37 @@ io.on("connection", (socket) => {
     socket.on("clearRooms", () => {
         rooms = {}
     });
+    socket.on("leaveLobby", (username) => {
+        gid = getCurrentRoom();
+        lobbyPlayers = io.sockets.adapter.rooms.get(gid);
+        const Lobbycreator = [...lobbyPlayers][0];
+        
+        if (Lobbycreator == socket.id) {
+            io.emit('roomRefresh', { roomid: gid, action: "remove" })
+            delete rooms[gid];
+            
+            socket.broadcast.to(gid).emit('kick');
+        }
+        else{
+            console.info(username)
+            rooms[gid] = username;
+            io.emit('roomRefresh', { roomid: gid, action: "add", creator: username });
+            socket.broadcast.to(getCurrentRoom()).emit("oponnentLeft");
+            socket.leave(gid);
+        }
+    });
+
+    socket.on("shareUsername",(username)=>{
+        socket.broadcast.to(getCurrentRoom()).emit("setOpponent",username);
+
+    })
 
     socket.on('gameReadyCheck', () => {
         currentRoom = getCurrentRoom();
         currentRoomPlayers = io.sockets.adapter.rooms.get(currentRoom);
+        console.log(currentRoomPlayers);
         if (currentRoomPlayers.size == 2) {
-            io.in(getCurrentRoom()).emit('gameReady', { state: true });
+            io.in(currentRoom).emit('gameReady', { state: true });
             var gameData = {
                 userList: Array.from(currentRoomPlayers),
                 scores: [0, 0],
@@ -82,7 +109,7 @@ io.on("connection", (socket) => {
             games[currentRoom] = gameData;
 
         }
-
+        io.in(currentRoom).emit("shareUsernames");
     });
 
     socket.on('readyUp', () => {
@@ -179,58 +206,64 @@ io.on("connection", (socket) => {
             return Array.from(socket.rooms).pop();
         }
     }
-        function checkDatabaseUsername(username, uid) {
-            database.table('user').filter({ id: String(uid) }).getAll().then(data => {
-                if (data[0].name == null) {
-                    database.query(`UPDATE user SET name= "${username}" WHERE id = "${uid}";`)
-                }
-            });
-        }
-        function writeScoreToDatabase(score) {
-            uid = socketIDtoDbID[socket.id]
-            database.query(`UPDATE user SET adcount= adcount + ${score} WHERE id = "${uid}";`)
-        }
-        function writeGameToDatabase(data) {
-            finishtime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            database.query(`INSERT into game_history (user1,user2,winner,start,finish)VALUES ("${data.user1}","${data.user2}","${data.winner}","${data.starttime}","${finishtime}");`)
-
-        }
-
-        function getPlayerStats(uid) {
-            playerStats = {}
-            database.table('game_history').filter({ $or: [{ user1: uid }, { user2: uid }] }).sort({ finish: 1 }).getAll().then(data => {
-                playerStats.games_played = data.length;
-                playerStats.wins = 0;
-                playerStats.draws = 0;
-                for (var i = 0; i < data.length; i++) {
-
-                    if (data[i].winner == uid) {
-                        playerStats.wins++;
-                    } else if (data[i].winner == "tie") {
-                        playerStats.draws++;
-                    }
-                }
-                playerStats.losses = playerStats.games_played - (playerStats.wins + playerStats.draws);
-
-                database.table('user').filter({ id: String(uid) }).getAll().then(data => {
-                    trackers = data[0].adcount
-                    playerStats.trackers = trackers;
-                    socket.emit("stats", playerStats);
-
-                });
-
-
-
-            });
-        }
-
-        function createLog(e, gameid = null) {
-            timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ')
-            eventuser = socketIDtoDbID[socket.id];
-            database.query(`INSERT INTO logs (event,timestamp,eventuser,gameid) VALUES ("${e}","${timestamp}","${eventuser}","${gameid}");`)
-        }
-        socket.on("disconnect", () => {
-            delete socketIDtoDbID[socket.id]
+    function checkDatabaseUsername(username, uid) {
+        database.table('user').filter({ id: String(uid) }).getAll().then(data => {
+            if (data[0].name == null) {
+                database.query(`UPDATE user SET name= "${username}" WHERE id = "${uid}";`)
+            }
+        }).catch(err => {
+            console.log(err);
         });
+    }
+    function writeScoreToDatabase(score) {
+        uid = socketIDtoDbID[socket.id]
+        database.query(`UPDATE user SET adcount= adcount + ${score} WHERE id = "${uid}";`)
+    }
+    function writeGameToDatabase(data) {
+        finishtime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        database.query(`INSERT into game_history (user1,user2,winner,start,finish)VALUES ("${data.user1}","${data.user2}","${data.winner}","${data.starttime}","${finishtime}");`)
+
+    }
+
+    function getPlayerStats(uid) {
+        playerStats = {}
+        database.table('game_history').filter({ $or: [{ user1: uid }, { user2: uid }] }).sort({ finish: 1 }).getAll().then(data => {
+            playerStats.games_played = data.length;
+            playerStats.wins = 0;
+            playerStats.draws = 0;
+            for (var i = 0; i < data.length; i++) {
+
+                if (data[i].winner == uid) {
+                    playerStats.wins++;
+                } else if (data[i].winner == "tie") {
+                    playerStats.draws++;
+                }
+            }
+            playerStats.losses = playerStats.games_played - (playerStats.wins + playerStats.draws);
+
+            database.table('user').filter({ id: String(uid) }).getAll().then(data => {
+                trackers = data[0].adcount
+                playerStats.trackers = trackers;
+                socket.emit("stats", playerStats);
+
+            }).catch(err => {
+                console.log(err);
+            });
+
+
+
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function createLog(e, gameid = null) {
+        timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ')
+        eventuser = socketIDtoDbID[socket.id];
+        database.query(`INSERT INTO logs (event,timestamp,eventuser,gameid) VALUES ("${e}","${timestamp}","${eventuser}","${gameid}");`)
+    }
+    socket.on("disconnect", () => {
+        delete socketIDtoDbID[socket.id]
     });
+});
 httpServer.listen(process.env.PORT || 3000);

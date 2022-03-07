@@ -29,3 +29,7 @@ Created stick or twist game, no need for twist button rn as loading a new web pa
 1. Fix spotted bugs
 2. Create the 2 feature outlined in the user evaluation
 3. Improve aesthetics
+
+# 06/03
+1. Put home button on "create lobby" screen
+2. Put opponent name on all game screens

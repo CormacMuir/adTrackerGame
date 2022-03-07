@@ -11,8 +11,8 @@ html {
 body {
     font-family: 'start2P' !important;
     background-color: light grey !important;
-    height:100% !important;
-    width:100% !important;
+    height: 100% !important;
+    width: 100% !important;
 }
 
 #game {
@@ -24,63 +24,73 @@ body {
 }
 
 #waitingForOpponent {
-    padding-top: 20px;
+    padding-top: 50px;
     display: none;
     text-align: center;
 }
+#waitingUsername{
+    color:#4aacf0;
+}
+
 #waitingForOpponent img {
-    position:absolute;
-    bottom:35px;
+    position: absolute;
+    bottom: 25px;
     left: 75px;
 }
-#homeBtn{
-    display:none;
+
+#homeBtn {
+    display: none;
     background: none;
-    height:50px;
-    width:47px;
-    position:absolute;
-    top:5px;
-    left:5px;
+    height: 50px;
+    width: 47px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
     background-image: url('../imgs/home-icon.png');
     background-position: center;
 }
-#profileBtn{
+
+#profileBtn {
     background: none;
-    height:50px;
-    width:50px;
-    position:absolute;
-    top:5px;
-    left:5px;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
     background-image: url('../imgs/profile.png');
     background-position: center;
 }
 
 #resultScreen {
-    
+
     display: none;
     text-align: center;
 }
-#profile{
-    display:none;
-    text-align:left;
+
+#profile {
+    display: none;
+    text-align: left;
     padding-top: 65px;
     padding-left: 5px;
 }
-#profile h2{
-    
-    text-align:center;
+
+#profile h2 {
+
+    text-align: center;
     padding-bottom: 10px;
-    
+
 }
-#resultInfo{
-    padding-top:90px;
+
+#resultInfo {
+    padding-top: 90px;
 }
-#resultInfo h2{
-    padding-bottom:10px;
+
+#resultInfo h2 {
+    padding-bottom: 10px;
 }
 
 #lobby {
-    width:100%;
+    width: 100%;
     height: 100%;
     display: none;
 }
@@ -94,28 +104,88 @@ body {
 
 #lobbySelect {
     display: none;
-    padding-left: 40px;
+    padding-left: 45px;
     padding-right: 40px;
 }
 
-#lobbyLabel{
+#lobbyLabel {
+
+    padding-top: 70px;
     text-align: center;
 }
-#readyBtnDiv{
-    padding-top:50px;
+
+#readyBtnDiv {
+    padding-top: 50px;
     text-align: center;
 }
-#ready-img{
-    height:20%;
-    width:20%;
+
+#ready-img {
+    height: 20%;
+    width: 20%;
     padding-bottom: 30px;
 }
-#ready-div{
-    display:none;
+
+#ready-div {
+    display: none;
+
 }
-#ready-text{
+
+#ready-text {
+
+    color: green;
+}
+#youDiv{
+    position: absolute;
+    left: 20px;
+    bottom:30px;
+    height:100px;
+    width:110px;
+    text-align: center;
+}
+#youIcon {
+
+    max-width: 30%;
+    max-height: 30%;
     
-    color:green;
+}
+
+#youLabel {
+
+    color: #4aacf0;
+}
+
+#vsLabel {
+    padding-top: 82px;
+    text-align: center;
+
+    bottom: 75px;
+    left: 100px;
+
+}
+#opponentDiv{
+    position: absolute;
+    right: 20px;
+    bottom:30px;
+    height:100px;
+    width:110px;
+    text-align: center;
+}
+#opponentLabel {
+
+    color: #4aacf0;
+}
+
+#opponentIcon {
+
+    max-width: 30%;
+    max-height: 30%;
+}
+#noOpponentIcon{
+    position:absolute;
+    bottom:26px;
+    right:26px;
+    max-width: 60%;
+    max-height: 60%;
 }
 
 #createbtnDiv {
@@ -127,7 +197,7 @@ body {
 #admin {
     position: absolute;
     bottom: 0px;
-    right:0px
+    right: 0px
 }
 
 #gameScreen p {
@@ -135,7 +205,7 @@ body {
 
     font-size: large;
     font-weight: bold;
-    padding-top:20px
+    padding-top: 20px
 }
 
 .awaitingResponse {
@@ -159,7 +229,7 @@ body {
 #gameSelectTitle {
     text-align: center;
     padding-top: 10px;
-    padding-bottom:10px;
+    padding-bottom: 10px;
 }
 
 #stick,

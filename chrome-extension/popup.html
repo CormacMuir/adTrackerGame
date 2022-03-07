@@ -27,12 +27,30 @@
         <p id="trackers">Ad Trackers Found:<span>None</span></p>
     </div>
     <div id="lobby">
-        <h4 id="lobbyLabel"></h4>
+        <h5 id="lobbyLabel"></h5>
         <div id="readyBtnDiv">
             <button type="button" class="btn btn-success btn-lg" id="readyBtn" disabled="disabled">Ready Up</button>
             <div id="ready-div">
                 <img id="ready-img" src='imgs/green-tick.png' />
                 <p id="ready-text">Waiting for other player to ready!</p>
+            </div>
+        </div>
+        <div id="lobbyPlayers">
+            <div id="youDiv">
+                <img id="youIcon" src="imgs/profile.png">
+                <div id="youLabel">
+                    <p>You</p>
+                </div>
+            </div>
+            <div id="vsLabel">
+                <h4>vs</h4>
+            </div>
+            <div id="opponentDiv">
+                <img id="opponentIcon" src="imgs/profile.png">
+                <div id="opponentLabel">
+                    <p></p>
+                </div>
+                <img id="noOpponentIcon" src="imgs/Spinner-1s-200px.gif">
             </div>
         </div>
     </div>
@@ -58,8 +76,10 @@
         </div>
     </div>
     <div id="waitingForOpponent">
-        <h2>Waiting for other player to make move...</h1>
-            <img src='imgs/Spinner-1s-200px.gif' />
+        <h3>Waiting for</h3>
+        <h3 id="waitingUsername"></h3>
+        <h3>to complete their turn...</h3>
+        <img src='imgs/Spinner-1s-200px.gif' />
     </div>
     <button id="homeBtn"></button>
     <div id="resultScreen">
