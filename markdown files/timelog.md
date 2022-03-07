@@ -117,7 +117,8 @@ Also added MongoDB and created a db however not integrated yet.
 **3 hours** created log database
 **1 hour** created "how to play" file
 **1 hour** fixed logging bugs
-**2 hours** conducted play test with external users
+**0.5hours** preparation for user evaluation (technical users)
+**2hours** user evaluation and interviews
 
 # 07/03
 **4 hours** Implemented changes discovered in play test
