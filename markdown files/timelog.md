@@ -123,6 +123,12 @@ Also added MongoDB and created a db however not integrated yet.
 # 07/03
 **4 hours** Implemented changes discovered in play test
 
+# 08/03
+**5 hours** wrote background of dissertation
+
+# 09/03
+**3 hours** finished background of disseration, wrote Iteration 1: analysis/requirements
+
 
 
 
