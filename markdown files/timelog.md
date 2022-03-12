@@ -129,6 +129,10 @@ Also added MongoDB and created a db however not integrated yet.
 # 09/03
 **3 hours** finished background of disseration, wrote Iteration 1: analysis/requirements
 
+# 11/03
+**5 hours** finished Iteration 1: Design
+
+
 
 
 

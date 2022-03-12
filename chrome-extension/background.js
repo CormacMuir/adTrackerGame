@@ -20,8 +20,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
                             chrome.storage.local.remove("error");
                             unique_hosts = [];
                         }
-                    } else {
-                        console.log("not a new turn");
                     }
                 }
             });
@@ -38,7 +36,12 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
             if (match) {
                 var domain = match[0] && match[1];
             }
-            var hostname = domain.substring(0, domain.lastIndexOf('.'));
+            try {
+                var hostname = domain.substring(0, domain.lastIndexOf('.'));
+            } catch (error) {
+                console.error(error);
+            }
+
             if (domain != null) {
                 if (unique_hosts.indexOf(hostname) === -1) {
                     unique_hosts.push(hostname);
