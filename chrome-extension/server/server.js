@@ -9,7 +9,6 @@ const { Server } = require("socket.io"), { createServer } = require("http"),
         },
         allowEIO3: true
     });
-const { Logger } = require("mongodb");
 const { database } = require('./config/helpers');
 
 rooms = {}
@@ -17,7 +16,6 @@ games = {}
 socketIDtoDbID = {}
 
 io.on("connection", (socket) => {
-
     socket.on("dbCheck", (uid) => {
         database.table('user').filter({ id: uid }).getAll().then(data => {
             if (data.length == 0) {
@@ -30,7 +28,6 @@ io.on("connection", (socket) => {
         socketIDtoDbID[socket.id] = uid;
 
     });
-
     console.info(`Client connected [id=${socket.id}]`);
     socket.on("getRooms", () => {
         socket.emit('populateRooms', rooms);
@@ -62,10 +59,6 @@ io.on("connection", (socket) => {
         uid = socketIDtoDbID[socket.id]
         stats = getPlayerStats(uid);
         createLog("Player accessed stats page");
-    });
-
-    socket.on("clearRooms", () => {
-        rooms = {}
     });
     socket.on("leaveLobby", (username) => {
         gid = getCurrentRoom();
@@ -125,7 +118,6 @@ io.on("connection", (socket) => {
             games[currentRoom] = gameData;
             io.in(currentRoom).emit('initGame', targetScore);
             SetTurn(getCurrentRoom());
-
         }
     });
 

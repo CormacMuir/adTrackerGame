@@ -242,7 +242,6 @@ function refreshPopup() {
         })
         //ADMIN BUTTON- REMOVE FOR PROD
     document.getElementById("admin").addEventListener("click", function() {
-        chrome.runtime.sendMessage({ 'clearRooms': true });
         window.location.reload()
         clearStorage();
     });

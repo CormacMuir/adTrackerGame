@@ -26,7 +26,7 @@
             "background.js",
             "scripts/trackerlist.js",
             "scripts/socket.io.js",
-            "scripts/socket-expose.js"
+            "scripts/client.js"
 
         ]
     },

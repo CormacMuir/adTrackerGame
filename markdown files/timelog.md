@@ -132,6 +132,13 @@ Also added MongoDB and created a db however not integrated yet.
 # 11/03
 **5 hours** finished Iteration 1: Design
 
+# 13/03
+**4 hours** worked on Iteration 1: Implementation
+
+# 16/03
+**5 hours** finished Iteration 1: Implementation and Evaluation
+
+
 
 
 
