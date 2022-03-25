@@ -20,7 +20,6 @@ io.on("connection", (socket) => {
         database.table('user').filter({ id: uid }).getAll().then(data => {
             if (data.length == 0) {
                 database.query('INSERT INTO user (id) VALUES ("' + uid + '");')
-                createLog("User connected for first time");
             }
         }).catch(err => {
             console.log(err);
@@ -62,6 +61,7 @@ io.on("connection", (socket) => {
     });
     socket.on("leaveLobby", (username) => {
         gid = getCurrentRoom();
+        if(gid){
         lobbyPlayers = io.sockets.adapter.rooms.get(gid);
         const Lobbycreator = [...lobbyPlayers][0];
         
@@ -78,6 +78,7 @@ io.on("connection", (socket) => {
             socket.broadcast.to(getCurrentRoom()).emit("oponnentLeft");
             socket.leave(gid);
         }
+    }
     });
 
     socket.on("shareUsername",(username)=>{
@@ -252,8 +253,10 @@ io.on("connection", (socket) => {
     function createLog(e, gameid = null) {
         timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ')
         eventuser = socketIDtoDbID[socket.id];
+        console.log(eventuser)
+        if (eventuser){
         database.query(`INSERT INTO logs (event,timestamp,eventuser,gameid) VALUES ("${e}","${timestamp}","${eventuser}","${gameid}");`)
-    }
+    }}
     socket.on("disconnect", () => {
         delete socketIDtoDbID[socket.id]
     });

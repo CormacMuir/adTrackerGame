@@ -12,6 +12,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
             window.location.reload();
         } else if (key == "profileData") {
             window.location.reload();
+        }else if(key=="opponentUsername"){
+            window.location.reload();
         } else if (key == "lobby") {
             window.location.reload();
         } else if (key == "opponentUsername") {
@@ -26,7 +28,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
         } else if (key == "currentURL") {
             if (typeof changes['currentURL'] != "undefined") {
-                chrome.runtime.sendMessage({ 'log': "Visited website: " + changes['currentURL'].newValue })
+                alert(changes['currentURL'].newValue )
+                chrome.runtime.sendMessage({ 'log': `Visited website:  + ${changes['currentURL'].newValue}` })
             } else {
                 console.log(typeof changes['currentURL'])
             }
@@ -222,6 +225,7 @@ function refreshPopup() {
                                 chrome.storage.local.get("opponentUsername", function(g) {
                                     if (g.opponentUsername) {
                                         $('#noOpponentIcon').hide()
+                                        
                                         $('#opponentLabel p').html(g.opponentUsername);
                                     }
                                 })
