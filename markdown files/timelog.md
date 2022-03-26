@@ -150,6 +150,12 @@ Also added MongoDB and created a db however not integrated yet.
 # 23/03
 **2 hours** Completed Iteration 2 Implementation
 
+# 24/03
+**4 hours** Began Iteration 2 Evaluation
+
+# 25/03
+**6 hours** Completed Iteration 2 Evaluation
+
 
 
 

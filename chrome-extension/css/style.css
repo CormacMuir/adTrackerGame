@@ -28,8 +28,9 @@ body {
     display: none;
     text-align: center;
 }
-#waitingUsername{
-    color:#4aacf0;
+
+#waitingUsername {
+    color: #4aacf0;
 }
 
 #waitingForOpponent img {
@@ -62,7 +63,6 @@ body {
 }
 
 #resultScreen {
-
     display: none;
     text-align: center;
 }
@@ -75,10 +75,8 @@ body {
 }
 
 #profile h2 {
-
     text-align: center;
     padding-bottom: 10px;
-
 }
 
 #resultInfo {
@@ -87,6 +85,10 @@ body {
 
 #resultInfo h2 {
     padding-bottom: 10px;
+}
+
+#lobbyPlayers p {
+    font-size: 13px;
 }
 
 #lobby {
@@ -98,8 +100,6 @@ body {
 #activeGames button {
     text-align: center;
     font-size: small;
-
-
 }
 
 #lobbySelect {
@@ -109,7 +109,6 @@ body {
 }
 
 #lobbyLabel {
-
     padding-top: 70px;
     text-align: center;
 }
@@ -127,63 +126,59 @@ body {
 
 #ready-div {
     display: none;
-
 }
 
 #ready-text {
-
     color: green;
 }
-#youDiv{
+
+#youDiv {
     position: absolute;
-    left: 20px;
-    bottom:30px;
-    height:100px;
-    width:110px;
+    left: 30px;
+    bottom: 30px;
+    height: 100px;
+    width: 110px;
     text-align: center;
 }
-#youIcon {
 
+#youIcon {
     max-width: 30%;
     max-height: 30%;
-    
 }
 
 #youLabel {
-
     color: #4aacf0;
 }
 
 #vsLabel {
     padding-top: 82px;
     text-align: center;
-
     bottom: 75px;
     left: 100px;
-
 }
-#opponentDiv{
+
+#opponentDiv {
     position: absolute;
-    right: 20px;
-    bottom:30px;
-    height:100px;
-    width:110px;
+    right: 35px;
+    bottom: 30px;
+    height: 100px;
+    width: 110px;
     text-align: center;
 }
-#opponentLabel {
 
+#opponentLabel {
     color: #4aacf0;
 }
 
 #opponentIcon {
-
     max-width: 30%;
     max-height: 30%;
 }
-#noOpponentIcon{
-    position:absolute;
-    bottom:26px;
-    right:26px;
+
+#noOpponentIcon {
+    position: absolute;
+    bottom: 26px;
+    right: 26px;
     max-width: 60%;
     max-height: 60%;
 }
@@ -194,10 +189,8 @@ body {
     left: 5px;
 }
 
-
 #gameScreen p {
     text-align: center;
-
     font-size: large;
     font-weight: bold;
     padding-top: 20px

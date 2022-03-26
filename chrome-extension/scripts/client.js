@@ -1,18 +1,18 @@
 //connection to server
-const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
+//const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
 //local connection for dev purposes
-//const socket = io.connect("http://localhost:3000");
-chrome.storage.local.get("uid", function (f) {
+const socket = io.connect("http://localhost:3000");
+chrome.storage.local.get("uid", function(f) {
     socket.emit("dbCheck", f.uid)
 });
 
 chrome.runtime.onMessage.addListener((message) => {
     if (message.createLobby === true) {
-        chrome.storage.local.get("username", function (f) {
+        chrome.storage.local.get("username", function(f) {
             socket.emit('joinRoom', -1, f.username)
         });
     } else if (typeof message.joinRoom !== 'undefined') {
-        chrome.storage.local.get("username", function (f) {
+        chrome.storage.local.get("username", function(f) {
             socket.emit('joinRoom', message.joinRoom, f.username);
         });
         chrome.runtime.sendMessage({ updateLobbyLabel: message.joinRoom });
@@ -22,24 +22,24 @@ chrome.runtime.onMessage.addListener((message) => {
     } else if (typeof message.readyClick !== 'undefined') {
         socket.emit("readyUp");
     } else if (message.turnComplete === true) {
-        chrome.storage.local.get("adCount", function (f) {
+        chrome.storage.local.get("adCount", function(f) {
             socket.emit("turnComplete", f.adCount);
         })
     } else if (message.getStats === true) {
         socket.emit("getPlayerStats");
-    }else if (typeof message.log !== 'undefined'){
+    } else if (typeof message.log !== 'undefined') {
         console.log(message.log);
-        socket.emit("log",message.log);
-    }else if(typeof message.leaveLobby !== 'undefined'){
-        chrome.storage.local.get("opponentUsername", function (f) {
-            socket.emit("leaveLobby",f.opponentUsername);
+        socket.emit("log", message.log);
+    } else if (typeof message.leaveLobby !== 'undefined') {
+        chrome.storage.local.get("opponentUsername", function(f) {
+            socket.emit("leaveLobby", f.opponentUsername);
             chrome.storage.local.remove("opponentUsername");
         })
     }
 })
 
 socket.on('populateRooms', (roomList) => {
-    Object.keys(roomList).forEach(function (key) {
+    Object.keys(roomList).forEach(function(key) {
         data = {};
         data.roomid = key;
         data.creator = roomList[key];
@@ -94,22 +94,22 @@ socket.on("gameFinished", (game) => {
 
 });
 
-socket.on("kick",()=>{
+socket.on("kick", () => {
     chrome.storage.local.remove("lobby");
 });
-socket.on("shareUsernames",()=>{
-    
-    chrome.storage.local.get("username", function (f) {
-        socket.emit('shareUsername',f.username)
+socket.on("shareUsernames", () => {
+
+    chrome.storage.local.get("username", function(f) {
+        socket.emit('shareUsername', f.username)
     });
 })
 
-socket.on("setOpponent",(opponentUsername)=>{
-    chrome.storage.local.set({'opponentUsername':opponentUsername})
+socket.on("setOpponent", (opponentUsername) => {
+    chrome.storage.local.set({ 'opponentUsername': opponentUsername })
     console.info(opponentUsername)
 })
 
-socket.on("oponnentLeft",()=>{
+socket.on("oponnentLeft", () => {
     chrome.storage.local.remove("opponentUsername");
     chrome.storage.local.remove("ready");
     chrome.runtime.sendMessage({ 'readyUp': false });
