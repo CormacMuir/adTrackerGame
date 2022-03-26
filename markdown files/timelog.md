@@ -138,7 +138,17 @@ Also added MongoDB and created a db however not integrated yet.
 # 16/03
 **5 hours** finished Iteration 1: Implementation and Evaluation
 
+# 18/03
+**2 hours** made ammendments on dis re. feedback
 
+# 21/03
+**2 hours** made more ammendments to dissertation using feedback
+
+# 22/03
+**6 hours** Completed Iteration 2 Analysis/Requirements and completed Iteration 2 Design
+
+# 23/03
+**2 hours** Completed Iteration 2 Implementation
 
 
 

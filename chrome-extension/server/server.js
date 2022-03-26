@@ -64,14 +64,13 @@ io.on("connection", (socket) => {
         if(gid){
         lobbyPlayers = io.sockets.adapter.rooms.get(gid);
         const Lobbycreator = [...lobbyPlayers][0];
-        
+
         if (Lobbycreator == socket.id) {
             io.emit('roomRefresh', { roomid: gid, action: "remove" })
             delete rooms[gid];
-            
+
             socket.broadcast.to(gid).emit('kick');
-        }
-        else{
+        } else {
             console.info(username)
             rooms[gid] = username;
             io.emit('roomRefresh', { roomid: gid, action: "add", creator: username });
@@ -81,8 +80,8 @@ io.on("connection", (socket) => {
     }
     });
 
-    socket.on("shareUsername",(username)=>{
-        socket.broadcast.to(getCurrentRoom()).emit("setOpponent",username);
+    socket.on("shareUsername", (username) => {
+        socket.broadcast.to(getCurrentRoom()).emit("setOpponent", username);
 
     })
 
@@ -199,6 +198,7 @@ io.on("connection", (socket) => {
             return Array.from(socket.rooms).pop();
         }
     }
+
     function checkDatabaseUsername(username, uid) {
         database.table('user').filter({ id: String(uid) }).getAll().then(data => {
             if (data[0].name == null) {
@@ -208,10 +208,12 @@ io.on("connection", (socket) => {
             console.log(err);
         });
     }
+
     function writeScoreToDatabase(score) {
         uid = socketIDtoDbID[socket.id]
         database.query(`UPDATE user SET adcount= adcount + ${score} WHERE id = "${uid}";`)
     }
+
     function writeGameToDatabase(data) {
         finishtime = new Date().toISOString().slice(0, 19).replace('T', ' ');
         database.query(`INSERT into game_history (user1,user2,winner,start,finish)VALUES ("${data.user1}","${data.user2}","${data.winner}","${data.starttime}","${finishtime}");`)
@@ -225,7 +227,6 @@ io.on("connection", (socket) => {
             playerStats.wins = 0;
             playerStats.draws = 0;
             for (var i = 0; i < data.length; i++) {
-
                 if (data[i].winner == uid) {
                     playerStats.wins++;
                 } else if (data[i].winner == "tie") {
@@ -233,18 +234,13 @@ io.on("connection", (socket) => {
                 }
             }
             playerStats.losses = playerStats.games_played - (playerStats.wins + playerStats.draws);
-
             database.table('user').filter({ id: String(uid) }).getAll().then(data => {
                 trackers = data[0].adcount
                 playerStats.trackers = trackers;
                 socket.emit("stats", playerStats);
-
             }).catch(err => {
                 console.log(err);
             });
-
-
-
         }).catch(err => {
             console.log(err);
         });
