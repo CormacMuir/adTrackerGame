@@ -194,11 +194,6 @@ body {
     left: 5px;
 }
 
-#admin {
-    position: absolute;
-    bottom: 0px;
-    right: 0px
-}
 
 #gameScreen p {
     text-align: center;

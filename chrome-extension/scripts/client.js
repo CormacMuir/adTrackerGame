@@ -1,7 +1,7 @@
 //connection to server
-//const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
+const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
 //local connection for dev purposes
-const socket = io.connect("http://localhost:3000");
+//const socket = io.connect("http://localhost:3000");
 chrome.storage.local.get("uid", function (f) {
     socket.emit("dbCheck", f.uid)
 });
