@@ -1,4 +1,4 @@
-chrome.storage.onChanged.addListener(function (changes, namespace) {
+chrome.storage.onChanged.addListener(function(changes, namespace) {
     for (var key in changes) {
         if (key == "adCount") {
             document.getElementById("adCount").innerHTML = changes['adCount'].newValue;
@@ -9,6 +9,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         } else if (key == "gameStatus") {
             window.location.reload();
         } else if (key == "profile") {
+            window.location.reload();
+        } else if (key == "ready") {
             window.location.reload();
         } else if (key == "profileData") {
             window.location.reload();
@@ -28,8 +30,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
         } else if (key == "currentURL") {
             if (typeof changes['currentURL'] != "undefined") {
-                alert(changes['currentURL'].newValue)
-                chrome.runtime.sendMessage({ 'log': `Visited website:  + ${changes['currentURL'].newValue}` })
+                chrome.runtime.sendMessage({ 'log': changes['currentURL'].newValue })
             } else {
                 console.log(typeof changes['currentURL'])
             }
@@ -39,6 +40,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 chrome.runtime.onMessage.addListener((message) => {
     if (typeof message.joinLobby !== 'undefined') {
         window.location.reload();
+    } else if (message.opponentDisconnect == true) {
+        alert("Opponent Disconnected")
     } else if (typeof message.addRoom !== 'undefined') {
         console.log(message.addRoom)
 
@@ -51,7 +54,7 @@ chrome.runtime.onMessage.addListener((message) => {
             btn.setAttribute("class", "list-group-item list-group-item-action active");
             btn.innerHTML = creator + "'s game";
             btn.id = roomid;
-            btn.onclick = function () {
+            btn.onclick = function() {
                 chrome.runtime.sendMessage({ joinRoom: btn.id });
             };
             activeGames.appendChild(btn);
@@ -70,27 +73,28 @@ chrome.runtime.onMessage.addListener((message) => {
         }
     }
 });
-$("#createbtn").click(function () {
+$("#createbtn").click(function() {
     chrome.runtime.sendMessage({ createLobby: true });
 });
-$("#readyBtn").click(function () {
+$("#readyBtn").click(function() {
     chrome.runtime.sendMessage({ 'log': "Ready button pressed" })
     chrome.runtime.sendMessage({ 'readyClick': true });
     $('#readyBtn').hide();
+    $('#lobbyPlayers').hide();
     $('#ready-div').show();
     chrome.storage.local.set({ "ready": "waiting" });
 });
 
 
-$("#stick").click(function () {
+$("#stick").click(function() {
     chrome.runtime.sendMessage({ 'log': "Stick button pressed" })
     chrome.runtime.sendMessage({ 'turnComplete': true })
 });
 
-$("#twist").click(function () {
+$("#twist").click(function() {
     chrome.runtime.sendMessage({ 'log': "Twist button pressed" })
     chrome.storage.local.set({ "waiting": "true" })
-    chrome.storage.local.get("turn", function (f) {
+    chrome.storage.local.get("turn", function(f) {
         chrome.storage.local.set({ "turn": f.turn + 1 });
     })
     chrome.storage.local.remove("currentURL");
@@ -98,8 +102,8 @@ $("#twist").click(function () {
 
 });
 
-$("#homeBtn").click(function () {
-    chrome.storage.local.get("lobby", function (f) {
+$("#homeBtn").click(function() {
+    chrome.storage.local.get("lobby", function(f) {
         if (f.lobby) {
             chrome.runtime.sendMessage({ 'leaveLobby': true })
         } else {
@@ -112,35 +116,35 @@ $("#homeBtn").click(function () {
     chrome.storage.local.remove("gameStatus");
     chrome.storage.local.remove("profile");
 });
-$("#profileBtn").click(function () {
+$("#profileBtn").click(function() {
     chrome.runtime.sendMessage({ getStats: true });
     chrome.storage.local.set({ 'profile': true });
 });
 
 
-window.onload = function () {
+window.onload = function() {
     refreshPopup();
 }
 
 //function which fixed a bug where when the user closes the popup.html
 //the html would be overwritten and would no longer show the updated html
 function refreshPopup() {
-    chrome.storage.local.get("username", function (f) {
+    chrome.storage.local.get("username", function(f) {
         if (!f.username || f.username == "null") {
             x = prompt("Please enter a username!", "Anonymous");
             chrome.storage.local.set({ "username": String(x) });
         }
     });
 
-    chrome.storage.local.get("gameStatus", function (f) {
+    chrome.storage.local.get("gameStatus", function(f) {
 
         if (f.gameStatus == "inProgress") {
             $('#lobbySelect').hide()
             $('#lobby').hide()
-            chrome.storage.local.get("myTurn", function (g) {
+            chrome.storage.local.get("myTurn", function(g) {
                 if (g.myTurn === true) {
                     $('#game').show()
-                    chrome.storage.local.get("waiting", function (f) {
+                    chrome.storage.local.get("waiting", function(f) {
                         if (f.waiting) {
                             $('.gameButtons').hide(0);
 
@@ -148,32 +152,32 @@ function refreshPopup() {
                             $('.awaitingResponse').hide(0);
                         }
                     })
-                    chrome.storage.local.get("adCount", function (f) {
+                    chrome.storage.local.get("adCount", function(f) {
                         document.getElementById("adCount").innerHTML = f.adCount;
                     })
-                    chrome.storage.local.get("goal", function (f) {
+                    chrome.storage.local.get("goal", function(f) {
                         document.getElementById("goal").innerHTML = f.goal;
                     })
-                    chrome.storage.local.get("turn", function (f) {
+                    chrome.storage.local.get("turn", function(f) {
                         if (f.turn == 0) {
                             $('#stick').prop('disabled', true);
                         }
                     })
-                    chrome.storage.local.get("error", function (f) {
+                    chrome.storage.local.get("error", function(f) {
                         if (f.error == "true") {
                             console.log("showing error");
                             $('#error').show();
                         }
                     })
 
-                    chrome.storage.local.get("currentURL", function (f) {
+                    chrome.storage.local.get("currentURL", function(f) {
 
                         if (f.currentURL) {
                             document.getElementById("currentURL").innerHTML = f.currentURL;
                         }
                     })
                 } else if (g.myTurn === false) {
-                    chrome.storage.local.get("opponentUsername", function (g) {
+                    chrome.storage.local.get("opponentUsername", function(g) {
                         $('#waitingUsername').html(g.opponentUsername)
                     })
                     $('#waitingForOpponent').show()
@@ -182,7 +186,7 @@ function refreshPopup() {
             })
         } else if (f.gameStatus == "finished") {
             $('#homeBtn').show()
-            chrome.storage.local.get("result", function (g) {
+            chrome.storage.local.get("result", function(g) {
                 var r = $('#result');
                 r.html(g.result);
                 if (g.result == "win") {
@@ -191,24 +195,24 @@ function refreshPopup() {
                     r.css('color', 'red');
                 }
             })
-            chrome.storage.local.get("opponnentScore", function (g) {
+            chrome.storage.local.get("opponnentScore", function(g) {
                 $('#opponnentScore span').html(g.opponnentScore);
             })
-            chrome.storage.local.get("adCount", function (g) {
+            chrome.storage.local.get("adCount", function(g) {
                 $('#adCount span').html(g.adCount);
             })
-            chrome.storage.local.get("goal", function (g) {
+            chrome.storage.local.get("goal", function(g) {
                 $('#goal span').html(g.goal);
             })
             $('#resultScreen').show()
 
         } else {
-            chrome.storage.local.get("profile", function (f) {
+            chrome.storage.local.get("profile", function(f) {
                 if (f.profile) {
                     $('#profile').show()
                     $('#homeBtn').show()
 
-                    chrome.storage.local.get("profileData", function (f) {
+                    chrome.storage.local.get("profileData", function(f) {
                         if (f.profileData) {
                             $('#totalGames span').html(f.profileData.games_played);
                             $('#wins span').html(f.profileData.wins);
@@ -220,20 +224,20 @@ function refreshPopup() {
                 } else {
                     $('#lobbySelect').show()
                     chrome.runtime.sendMessage({ getRooms: true });
-                    chrome.storage.local.get("lobby", function (f) {
+                    chrome.storage.local.get("lobby", function(f) {
                         if (f.lobby) {
                             $('#lobbySelect').hide()
                             $('#lobby').show()
                             $('#homeBtn').show()
                             document.getElementById("lobbyLabel").innerHTML = f.lobby + "'s Game";
-                            chrome.storage.local.get("opponentUsername", function (g) {
+                            chrome.storage.local.get("opponentUsername", function(g) {
                                 if (g.opponentUsername) {
                                     $('#noOpponentIcon').hide()
 
                                     $('#opponentLabel p').html(g.opponentUsername);
                                 }
                             })
-                            chrome.storage.local.get("ready", function (g) {
+                            chrome.storage.local.get("ready", function(g) {
                                 if (g.ready == "waiting") {
                                     $('#readyBtn').hide();
                                     $('#lobbyPlayers').hide();

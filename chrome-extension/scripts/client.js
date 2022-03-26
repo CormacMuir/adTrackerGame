@@ -1,7 +1,10 @@
 //connection to server
-const socket = io.connect("https://adtracker-l4project.herokuapp.com/");
+const socket = io.connect("https://adtracker-l4project.herokuapp.com/", { 'sync disconnect on unload': true });
 //local connection for dev purposes
-//const socket = io.connect("http://localhost:3000");
+//const socket = io.connect("http://localhost:3000", { 'sync disconnect on unload': true });
+
+//Clear any lobby join data when startup
+resetGame()
 
 chrome.storage.local.get("uid", function(f) {
     socket.emit("dbCheck", f.uid)
@@ -116,7 +119,19 @@ socket.on("oponnentLeft", () => {
     chrome.runtime.sendMessage({ 'readyUp': false });
 })
 
+socket.on("opponentDisconnect", () => {
+    console.log("opponentDisconnected");
+    resetGame();
+    chrome.runtime.sendMessage({ 'opponentDisconnect': true });
+})
 
+
+function resetGame() {
+    chrome.storage.local.remove("lobby");
+    chrome.storage.local.remove("gameStatus");
+    chrome.storage.local.remove("waiting");
+    chrome.storage.local.remove("ready");
+}
 
 function setupGame(targetScore) {
     chrome.storage.local.remove('waiting');

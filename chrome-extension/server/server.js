@@ -61,23 +61,23 @@ io.on("connection", (socket) => {
     });
     socket.on("leaveLobby", (username) => {
         gid = getCurrentRoom();
-        if(gid){
-        lobbyPlayers = io.sockets.adapter.rooms.get(gid);
-        const Lobbycreator = [...lobbyPlayers][0];
+        if (gid) {
+            lobbyPlayers = io.sockets.adapter.rooms.get(gid);
+            const Lobbycreator = [...lobbyPlayers][0];
 
-        if (Lobbycreator == socket.id) {
-            io.emit('roomRefresh', { roomid: gid, action: "remove" })
-            delete rooms[gid];
+            if (Lobbycreator == socket.id) {
+                io.emit('roomRefresh', { roomid: gid, action: "remove" })
+                delete rooms[gid];
 
-            socket.broadcast.to(gid).emit('kick');
-        } else {
-            console.info(username)
-            rooms[gid] = username;
-            io.emit('roomRefresh', { roomid: gid, action: "add", creator: username });
-            socket.broadcast.to(getCurrentRoom()).emit("oponnentLeft");
-            socket.leave(gid);
+                socket.broadcast.to(gid).emit('kick');
+            } else {
+                console.info(username)
+                rooms[gid] = username;
+                io.emit('roomRefresh', { roomid: gid, action: "add", creator: username });
+                socket.broadcast.to(getCurrentRoom()).emit("oponnentLeft");
+                socket.leave(gid);
+            }
         }
-    }
     });
 
     socket.on("shareUsername", (username) => {
@@ -250,10 +250,22 @@ io.on("connection", (socket) => {
         timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ')
         eventuser = socketIDtoDbID[socket.id];
         console.log(eventuser)
-        if (eventuser){
-        database.query(`INSERT INTO logs (event,timestamp,eventuser,gameid) VALUES ("${e}","${timestamp}","${eventuser}","${gameid}");`)
-    }}
+        if (eventuser) {
+            database.query(`INSERT INTO logs (event,timestamp,eventuser,gameid) VALUES ("${e}","${timestamp}","${eventuser}","${gameid}");`)
+        }
+    }
     socket.on("disconnect", () => {
+        activeRooms = io.of("/").adapter.rooms
+        for (const [room, users] of activeRooms.entries()) {
+            if (room.length > 10) {
+                continue
+            } else {
+                if (users.size < 2) {
+                    io.in(room).emit('opponentDisconnect');
+                    console.log("user disconnected, room told")
+                }
+            }
+        }
         delete socketIDtoDbID[socket.id]
     });
 });
