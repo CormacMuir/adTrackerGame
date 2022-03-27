@@ -94,7 +94,7 @@ socket.on("gameFinished", (game) => {
     chrome.storage.local.set({ 'result': game.result });
     chrome.storage.local.set({ 'opponnentScore': game.opponnentScore });
     chrome.storage.local.set({ 'gameStatus': "finished" });
-
+    socket.emit('leaveRoom');
 });
 
 socket.on("kick", () => {

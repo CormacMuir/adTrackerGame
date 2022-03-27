@@ -143,6 +143,10 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on('leaveRoom', () => {
+        socket.leave(getCurrentRoom());
+    })
+
     function SetTurn() {
         currentRoom = getCurrentRoom();
         gameData = games[currentRoom];
