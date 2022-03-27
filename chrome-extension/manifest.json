@@ -2,8 +2,9 @@
     "manifest_version": 2,
     "name": "Ad Game",
     "description": "Game with ad trackers",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "author": "<Cormac Muir>",
+    "icons": { "128": "imgs/logo.png"},
     "browser_action": {
         "default_title": "AdblockGame",
         "default_popup": "popup.html"
@@ -16,6 +17,7 @@
         "webNavigation",
         "webRequest",
         "webRequestBlocking",
+        "notifications",
         "http://*/",
         "https://*/",
         "http://localhost/*"

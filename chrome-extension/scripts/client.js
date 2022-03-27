@@ -2,7 +2,6 @@
 const socket = io.connect("https://adtracker-l4project.herokuapp.com/", { 'sync disconnect on unload': true });
 //local connection for dev purposes
 //const socket = io.connect("http://localhost:3000", { 'sync disconnect on unload': true });
-
 //Clear any lobby join data when startup
 resetGame()
 
