@@ -162,28 +162,28 @@ io.on("connection", (socket) => {
         user2 = { id: gameData.userList[1], score: gameData.scores[1] }
 
         if (user1.score > targetScore && user2.score > targetScore) {
-            io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: "BUST" });
-            io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: "BUST" });
+            io.to(user1.id).emit('gameFinished', { result: "tie", opponentScore: "BUST" });
+            io.to(user2.id).emit('gameFinished', { result: "tie", opponentScore: "BUST" });
             return "tie";
         } else if (user1.score > targetScore) {
-            io.to(user1.id).emit('gameFinished', { result: "lose", opponnentScore: user2.score });
-            io.to(user2.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
+            io.to(user1.id).emit('gameFinished', { result: "lose", opponentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "win", opponentScore: "BUST" });
             return socketIDtoDbID[user2.id];
         } else if (user2.score > targetScore) {
-            io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: "BUST" });
-            io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
+            io.to(user1.id).emit('gameFinished', { result: "win", opponentScore: "BUST" });
+            io.to(user2.id).emit('gameFinished', { result: "lose", opponentScore: user1.score });
             return socketIDtoDbID[user1.id];
         } else if (user1.score == user2.score) {
-            io.to(user1.id).emit('gameFinished', { result: "tie", opponnentScore: user2.score });
-            io.to(user2.id).emit('gameFinished', { result: "tie", opponnentScore: user1.score });
+            io.to(user1.id).emit('gameFinished', { result: "tie", opponentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "tie", opponentScore: user1.score });
             return "tie";
         } else if (user1.score > user2.score) {
-            io.to(user1.id).emit('gameFinished', { result: "win", opponnentScore: user2.score });
-            io.to(user2.id).emit('gameFinished', { result: "lose", opponnentScore: user1.score });
+            io.to(user1.id).emit('gameFinished', { result: "win", opponentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "lose", opponentScore: user1.score });
             return socketIDtoDbID[user1.id];
         } else if (user2.score > user1.score) {
-            io.to(user1.id).emit('gameFinished', { result: "lose", opponnentScore: user2.score });
-            io.to(user2.id).emit('gameFinished', { result: "win", opponnentScore: user1.score });
+            io.to(user1.id).emit('gameFinished', { result: "lose", opponentScore: user2.score });
+            io.to(user2.id).emit('gameFinished', { result: "win", opponentScore: user1.score });
             return socketIDtoDbID[user2.id];
 
         }

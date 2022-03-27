@@ -195,8 +195,8 @@ function refreshPopup() {
                     r.css('color', 'red');
                 }
             })
-            chrome.storage.local.get("opponnentScore", function(g) {
-                $('#opponnentScore span').html(g.opponnentScore);
+            chrome.storage.local.get("opponentScore", function(g) {
+                $('#opponentScore span').html(g.opponentScore);
             })
             chrome.storage.local.get("adCount", function(g) {
                 $('#adCount span').html(g.adCount);
