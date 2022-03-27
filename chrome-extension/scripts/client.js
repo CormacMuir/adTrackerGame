@@ -119,7 +119,7 @@ socket.on("oponnentLeft", () => {
 })
 
 socket.on("opponentDisconnect", () => {
-    console.log("opponentDisconnected");
+    console.log("opponent Disconnected");
     resetGame();
     chrome.runtime.sendMessage({ 'opponentDisconnect': true });
 })
