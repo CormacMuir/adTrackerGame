@@ -71,7 +71,6 @@ io.on("connection", (socket) => {
 
                 socket.broadcast.to(gid).emit('kick');
             } else {
-                console.info(username)
                 rooms[gid] = username;
                 io.emit('roomRefresh', { roomid: gid, action: "add", creator: username });
                 socket.broadcast.to(getCurrentRoom()).emit("oponnentLeft");
