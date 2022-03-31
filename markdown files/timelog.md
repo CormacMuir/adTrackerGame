@@ -165,3 +165,11 @@ Also added MongoDB and created a db however not integrated yet.
 # 28/03
 **8 hours** Completed Iteration 3: Evaluation
 
+# 29/03
+**7 hours** Worked on Conclusion
+
+# 30/03
+**3 hours** Finished conclusion and read through for punctuation
+
+
+
