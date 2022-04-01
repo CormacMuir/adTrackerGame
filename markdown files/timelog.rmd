@@ -258,5 +258,5 @@ Also added MongoDB and created a db however not integrated yet.
 **8 hours** tidied dissertation and wrote script for presentation. Recorded presentation also
 
 # 31/03
-**5 hours** Cut and edited presentation
+**5 hours** Cut and edited presentation, created manual and readme
 
