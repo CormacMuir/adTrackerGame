@@ -1,14 +1,36 @@
+# Timelog
+
+* A Distributed Game Using Adverts in Web Browsers
+* Cormac Muir
+* 2375400m
+* Matthew Chalmers
+
+
+
+# --WEEK 1--
+
 # 30/9 
 **4 hours**  looking for research papers and reading through some material sent by advisor
+
+
+# --WEEK 2--
 
 # 7/10
 **4 hours** looking at blacklight, the source code for blacklight and thinking about how the backend infrastructure for game could work
 
+
+# --WEEK 3--
+
 # 14/10
 **5 hours** reading further material and then deciding that I will attempt to host this projects server side logic on AWS services. Spent time deciding which AWS services may be of use. And designed a rough sketch of architecture
 
+
+# --WEEK 4--
+
 # 18/10
 **3 hours** began implementing a NoSQL database using AWS' dynamoDB however ran into problems with communication between react app and database
+
+
 
 # 20/10
 **4 hours** resolved issues with db communication however scrapped the use of separate react app and dynamoDB due to over complicating . Now investigating AWS amplify
@@ -19,8 +41,14 @@
 # 24/10
 **4 hours** Worked through Amplify tutorial and managed to get a react app up, login functionality as well as communcation with a DynamoDB. Need to work towards full user tables made.
 
+# --WEEK 5--
+
+
 # 27/10
 **5 hours** Worked on amplift project and spent most of the time stuck on issues regarding communication with DynamoDB, plan is to come back to this after looking at scraping ad data and considering game 
+
+
+# --WEEK 6--
 
 # 01/11
 **2 hours** Spent some time thinking about gameplay and drew up some ROUGH sketches in notepad about what game might look like along with how user interface might work
@@ -29,6 +57,10 @@
 **2 hour** Developing ad blocker so i can extract the necessary ideas needed to develop ad tracker detection.
 **2 hours** found block list that seems to be useful called adblock.txt, researched more on google chrome extension development.
 
+# --WEEK 7--
+# --WEEK 8--
+# --WEEK 9--
+# --WEEK 10--
 
 # 01/12
 **4 hours** finally got extension working, able to obtain dom data and can retrieve current page data, can now begin focusing on logic
@@ -37,10 +69,16 @@
 # 05/12
 **4 hours** spent workin on js to allow me to detect ad trackers, wrking successfully next step is integrating with popup.html/popup.js and then server comms
 
+
+# --WEEK 11--
+
 # 09/12
 
 **2 hours** got live ad counting working with dynamic html popup, user an now see a live counter of how many ads they have seen
 **0.5 hours** fixed a bug where when popup.html was closed and reopened the live ad counter would reset until another ad tracker was found
+
+
+# --WEEK 12--
 
 # 14/12
 **4 hours** got first working version of single player stick or twist game working, need to iron out some bugs however after this is working at a good level i will look to implement some form of multiplayer version
@@ -52,20 +90,38 @@ Completed 2/4 tasks set out in plan, checks to ensure same website can't be used
 # 16/12
 **2 hours** spent time working on cleaning up javascript functions and also worked on wrapping different HTML elements that were part of different game screens in class tags to allow for cleaner JS.(e.g "ResultScreen")
 
+
+# --WEEK 13--
+
 # 20/12
 **1 hour** fixed bug which prevented JQuery from being accessbile due to content security policy set by google.
 
 # 22/12
 **6 hours** Got loading animation working, disabled making moves whilst a turn was in progress, added timeout for listneing for ad trackers, 
 
+
+# --WEEK 14--
+
+
+# --WEEK 15--
+
 # 06/01
 **20 hours** Forgot to log time spent, hence the large number of hours spent. Notes, plan and git commits detail what exactlty was done, single player version is complete, still needs styled but moving onto multuplayer now.
+
+
+# --WEEK 16--
+
+
+# --WEEK 17--
 
 # 16/01 - 19/01
 **15 hours** Researching socket.io material, learning how the library works and completed a tutorial. Have a good idea of how socket.io will be useful in my project.
 
 # 20/01
 **4 hours** Adapted the tutorial to work on a turn based system, clients can be identified by server and if its not their turn they must wait for the other player. This is how my final game will work and thus is excellent progress. Next steps include taking the standalone multiplayer interactions i've developed and merge them with my single player game.
+
+
+# --WEEK 18--
 
 # 24/01
 **2 hours** Worked on 'rooms' so that users can see list of open games
@@ -74,11 +130,17 @@ Completed 2/4 tasks set out in plan, checks to ensure same website can't be used
 **7 hours** Managed to finish my test application to get all the building blocks of socket.io working. Many different "lobbies" can have their own turn-based interactions and there is a 'live' lobby screen which players can see all available games from and join accordingly
 Also added MongoDB and created a db however not integrated yet.
 
+
+# --WEEK 19--
+
 # 28/01-31/01
-**~10hours** Attempting to resolve the headache of integrating socket.io.
+**12hours** Attempting to resolve the headache of integrating socket.io.
 
 # 04-06/02 
-**~15hours** Finally got socket.io working and the sockets persisting between pages, can finally start to actually work and integrate game logic
+**15hours** Finally got socket.io working and the sockets persisting between pages, can finally start to actually work and integrate game logic
+
+
+# --WEEK 20--
 
 # 07/02
 **4 hours** Worked on server logic and got hosting on heroku setup
@@ -92,8 +154,14 @@ Also added MongoDB and created a db however not integrated yet.
 # 12/02
 **4 hours** Created first gameplay user evaluation and conducted with 1 user in coffee shop
 
+
+# --WEEK 21--
+
 # 14/02
 **1 hour** Created dissertation outline and filled in motivation and began thinking about what will fill up background
+
+
+# --WEEK 22--
 
 # 24/02/2022
 **4 hours** Wrote css and got improved server logic working
@@ -107,6 +175,9 @@ Also added MongoDB and created a db however not integrated yet.
 # 27/02/2022
 **2 hours** Refined database and wrote more sql
 
+
+# --WEEK 23--
+
 # 01/03
 **5 hours** Created profile stats page and added all database lookups nececessary
 
@@ -119,6 +190,9 @@ Also added MongoDB and created a db however not integrated yet.
 **1 hour** fixed logging bugs
 **0.5hours** preparation for user evaluation (technical users)
 **2hours** user evaluation and interviews
+
+
+# --WEEK 24--
 
 # 07/03
 **4 hours** Implemented changes discovered in play test
@@ -135,11 +209,17 @@ Also added MongoDB and created a db however not integrated yet.
 # 13/03
 **4 hours** worked on Iteration 1: Implementation
 
+
+# --WEEK 25--
+
 # 16/03
 **5 hours** finished Iteration 1: Implementation and Evaluation
 
 # 18/03
 **2 hours** made ammendments on dis re. feedback
+
+
+# --WEEK 26--
 
 # 21/03
 **2 hours** made more ammendments to dissertation using feedback
@@ -162,6 +242,9 @@ Also added MongoDB and created a db however not integrated yet.
 # 27/03
 **5 hours** Finished design and also implementation for iteration 3
 
+
+# --WEEK 27--
+
 # 28/03
 **8 hours** Completed Iteration 3: Evaluation
 
@@ -171,5 +254,9 @@ Also added MongoDB and created a db however not integrated yet.
 # 30/03
 **3 hours** Finished conclusion and read through for punctuation
 
+# 31/03
+**8 hours** tidied dissertation and wrote script for presentation. Recorded presentation also
 
+# 31/03
+**5 hours** Cut and edited presentation
 
